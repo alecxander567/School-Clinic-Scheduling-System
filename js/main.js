@@ -1,8 +1,3 @@
-// ==============================================
-// File: js/main.js
-// JavaScript for interactive UI components
-// ==============================================
-
 document.addEventListener("DOMContentLoaded", function () {
   // Authentication form toggle between Login and Signup
   const loginForm = document.getElementById("login-form");

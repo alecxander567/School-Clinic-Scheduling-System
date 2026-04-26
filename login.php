@@ -46,88 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>School Clinic — Scheduling System</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-up {
-            animation: fadeUp .6s cubic-bezier(.22, .68, 0, 1.2) both;
-        }
-
-        .d1 {
-            animation-delay: .05s;
-        }
-
-        .d2 {
-            animation-delay: .15s;
-        }
-
-        .d3 {
-            animation-delay: .25s;
-        }
-
-        .d4 {
-            animation-delay: .35s;
-        }
-
-        body {
-            background: #f0f7f4;
-        }
-
-        input[type="email"],
-        input[type="password"],
-        input[type="text"] {
-            transition: border-color .2s, box-shadow .2s;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #2d8a6e !important;
-            box-shadow: 0 0 0 3px rgba(45, 138, 110, .12);
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 14px;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            color: #7aaa96;
-            border-bottom: 2px solid transparent;
-            transition: all .2s;
-        }
-
-        .tab-btn.active {
-            color: #2d8a6e;
-            border-bottom-color: #2d8a6e;
-            background: #f7fcfa;
-        }
-
-        .tab-btn:hover:not(.active) {
-            color: #1a2e25;
-            background: #f0f7f4;
-        }
-
-        /* Mobile nav toggle */
-        #mobile-menu {
-            display: none;
-        }
-
-        #mobile-menu.open {
-            display: flex;
-        }
-    </style>
+    <link rel="stylesheet" href="./css/login.css">
 </head>
 
 <body class="min-h-screen" style="background:#f0f7f4;">
@@ -420,32 +339,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </footer>
 
-    <script>
-        function switchTab(tab) {
-            const isLogin = tab === 'login';
-            document.getElementById('panel-login').style.display = isLogin ? 'block' : 'none';
-            document.getElementById('panel-signup').style.display = isLogin ? 'none' : 'block';
-            document.getElementById('tab-login').classList.toggle('active', isLogin);
-            document.getElementById('tab-signup').classList.toggle('active', !isLogin);
-        }
-
-        function toggleMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const open = document.getElementById('icon-open');
-            const close = document.getElementById('icon-close');
-            const isOpen = menu.classList.toggle('open');
-            open.classList.toggle('hidden', isOpen);
-            close.classList.toggle('hidden', !isOpen);
-        }
-
-        setTimeout(() => {
-            document.querySelectorAll('[style*="background:#fff0f0"], [style*="background:#e1f5ee"]').forEach(el => {
-                el.style.transition = 'opacity .3s';
-                el.style.opacity = '0';
-                setTimeout(() => el.remove(), 300);
-            });
-        }, 5000);
-    </script>
+    <script src="./js/login.js"></script>
 
 </body>
 
