@@ -1,0 +1,341 @@
+/* ============================================================
+   dashboard.css — Trust & Tranquility theme
+   School Clinic Scheduler
+   ============================================================ */
+
+/* ── Design tokens ────────────────────────────────────────── */
+:root {
+  --color-bg: #f0f7f4;
+  --color-surface: #ffffff;
+  --color-border: #ddeee7;
+
+  --color-primary: #2d8a6e;
+  --color-primary-dark: #0f6e56;
+  --color-primary-deep: #1a2e25;
+
+  --color-text-main: #1a2e25;
+  --color-text-muted: #7aaa96;
+  --color-text-soft: #9ab5aa;
+  --color-text-mid: #5a8a79;
+
+  /* Tint fills */
+  --tint-teal: #e1f5ee;
+  --tint-blue: #e6f1fb;
+  --tint-amber: #faeeda;
+  --tint-red: #fcebeb;
+  --tint-gray: #f1efe8;
+
+  /* Accent text colors */
+  --accent-blue: #185fa5;
+  --accent-amber: #ba7517;
+  --accent-amber-dark: #854f0b;
+  --accent-red: #a32d2d;
+  --accent-gray: #5f5e5a;
+
+  /* Borders for tints */
+  --border-teal: #9fe1cb;
+  --border-blue: #b5d4f4;
+  --border-amber: #fac775;
+  --border-gray: #d3d1c7;
+}
+
+/* ── Base ─────────────────────────────────────────────────── */
+* {
+  font-family: "DM Sans", sans-serif;
+}
+
+body {
+  background: var(--color-bg);
+  min-height: 100vh;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #c5d9d0;
+  border-radius: 5px;
+}
+
+/* ── Animations ───────────────────────────────────────────── */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes growBar {
+  from {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+.d1 {
+  animation-delay: 0.05s;
+}
+.d2 {
+  animation-delay: 0.1s;
+}
+.d3 {
+  animation-delay: 0.15s;
+}
+.d4 {
+  animation-delay: 0.2s;
+}
+.d5 {
+  animation-delay: 0.25s;
+}
+
+.bar-fill {
+  transform-origin: bottom;
+  animation: growBar 0.6s ease forwards;
+}
+
+/* ── Mobile menu button ───────────────────────────────────── */
+.mobile-menu-btn {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* ── Top bar ──────────────────────────────────────────────── */
+.topbar {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.topbar-title {
+  color: var(--color-text-main);
+}
+
+.topbar-subtitle {
+  color: var(--color-text-muted);
+}
+
+.topbar-date {
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
+.topbar-notif-btn {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.topbar-notif-btn svg {
+  color: var(--color-text-mid);
+}
+
+.topbar-notif-dot {
+  background: var(--color-primary);
+}
+
+.topbar-avatar {
+  background: var(--tint-teal);
+  color: var(--color-primary-dark);
+}
+
+.topbar-user-name {
+  color: var(--color-text-main);
+}
+
+.topbar-user-email {
+  color: var(--color-text-muted);
+}
+
+/* ── Welcome banner ───────────────────────────────────────── */
+.welcome-banner {
+  background: var(--color-primary);
+}
+
+.welcome-banner-title {
+  color: #e1f5ee;
+}
+
+.welcome-banner-subtitle {
+  color: #9fe1cb;
+}
+
+.welcome-banner-pill {
+  background: rgba(255, 255, 255, 0.15);
+  color: #e1f5ee;
+}
+
+/* ── Stat cards ───────────────────────────────────────────── */
+.stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(45, 138, 110, 0.1);
+}
+
+.stat-card-number {
+  color: var(--color-text-main);
+}
+
+.stat-card-label {
+  color: var(--color-text-muted);
+}
+
+/* Stat icon tints */
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon--teal {
+  background: var(--tint-teal);
+}
+.stat-icon--teal svg {
+  color: var(--color-primary);
+}
+
+.stat-icon--blue {
+  background: var(--tint-blue);
+}
+.stat-icon--blue svg {
+  color: var(--accent-blue);
+}
+
+.stat-icon--amber {
+  background: var(--tint-amber);
+}
+.stat-icon--amber svg {
+  color: var(--accent-amber);
+}
+
+.stat-icon--red {
+  background: var(--tint-red);
+}
+.stat-icon--red svg {
+  color: var(--accent-red);
+}
+
+/* Stat badges */
+.stat-badge {
+  font-weight: 500;
+}
+
+.stat-badge--teal {
+  background: var(--tint-teal);
+  color: var(--color-primary-dark);
+}
+.stat-badge--blue {
+  background: var(--tint-blue);
+  color: var(--accent-blue);
+}
+.stat-badge--amber {
+  background: var(--tint-amber);
+  color: var(--accent-amber);
+}
+.stat-badge--red {
+  background: var(--tint-red);
+  color: var(--accent-red);
+}
+
+/* ── Panel cards (appointments, quick actions) ────────────── */
+.panel-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.panel-card-title {
+  color: var(--color-text-main);
+}
+
+.panel-card-link {
+  color: var(--color-primary);
+}
+
+.panel-card-empty {
+  color: var(--color-text-soft);
+}
+
+/* ── Quick action tiles ───────────────────────────────────── */
+.qa-tile {
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.qa-tile:hover {
+  opacity: 0.8;
+}
+
+.qa-tile--teal {
+  background: var(--tint-teal);
+  border: 1px solid var(--border-teal);
+}
+.qa-tile--teal span,
+.qa-tile--teal svg {
+  color: var(--color-primary-dark);
+}
+
+.qa-tile--blue {
+  background: var(--tint-blue);
+  border: 1px solid var(--border-blue);
+}
+.qa-tile--blue span,
+.qa-tile--blue svg {
+  color: var(--accent-blue);
+}
+
+.qa-tile--amber {
+  background: var(--tint-amber);
+  border: 1px solid var(--border-amber);
+}
+.qa-tile--amber span,
+.qa-tile--amber svg {
+  color: var(--accent-amber-dark);
+}
+
+.qa-tile--gray {
+  background: var(--tint-gray);
+  border: 1px solid var(--border-gray);
+}
+.qa-tile--gray span,
+.qa-tile--gray svg {
+  color: var(--accent-gray);
+}
+
+/* ── Nav link (sidebar active state via JS) ───────────────── */
+.nav-link {
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.nav-link.active {
+  background: var(--color-primary) !important;
+  color: #e1f5ee !important;
+}
+
+.nav-link.active svg {
+  color: #e1f5ee !important;
+}
+.nav-link.active span {
+  color: #e1f5ee !important;
+}
