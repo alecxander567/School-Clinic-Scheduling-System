@@ -122,8 +122,8 @@ class StudentController
 
             if (empty($year_level)) {
                 $errors[] = "Year level is required.";
-            } elseif (!is_numeric($year_level) || $year_level < 1 || $year_level > 6) {
-                $errors[] = "Year level must be between 1 and 6.";
+            } elseif (!is_numeric($year_level) || $year_level < 1 || $year_level > 4) {
+                $errors[] = "Year level must be between 1 and 4.";
             }
 
             if (empty($contact_number)) {

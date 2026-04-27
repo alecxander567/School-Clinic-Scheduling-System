@@ -237,7 +237,7 @@ $courses = [
                                     </label>
                                     <select name="year_level" class="form-input" required>
                                         <option value="">Select Year Level</option>
-                                        <?php for ($i = 1; $i <= 6; $i++): ?>
+                                        <?php for ($i = 1; $i <= 4; $i++): ?>
                                             <option value="<?php echo $i; ?>"
                                                 <?php echo ((int)$formData['year_level'] === $i) ? 'selected' : ''; ?>>
                                                 Year <?php echo $i; ?>
