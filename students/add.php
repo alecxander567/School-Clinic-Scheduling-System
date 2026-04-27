@@ -33,14 +33,11 @@ $currentPage = 'students/add.php';
 $sidebar     = new Sidebar($currentPage, $userRole, $userName);
 
 $courses = [
-    'Computer Science',
-    'Information Technology',
-    'Engineering',
-    'Business Administration',
-    'Nursing',
     'Education',
-    'Psychology',
-    'Other',
+    'Information Technology',
+    'Criminology',
+    'Business Administration',
+    'Human Services'
 ];
 ?>
 <!DOCTYPE html>
