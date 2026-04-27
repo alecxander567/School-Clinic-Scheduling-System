@@ -22,6 +22,44 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/dashboard.css">
+    <style>
+        #mainContent {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        #mainContent>main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lower-row {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 1024px) {
+            .lower-row {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .lower-row .panel-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .lower-row .panel-card .panel-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
 </head>
 
 <body>
@@ -51,7 +89,9 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
                     <p class="topbar-subtitle text-xs">Welcome back, <?php echo htmlspecialchars($userName); ?></p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <span class="topbar-date hidden sm:block text-xs px-3 py-1.5 rounded-lg">
+                    <!-- Date styled to match student list topbar -->
+                    <span class="topbar-date hidden sm:block text-xs px-3 py-1.5 rounded-lg"
+                        style="background:#f4f8f5; color:#2c5a48;">
                         <?php echo date('D, M j Y'); ?>
                     </span>
                     <!-- Notification bell -->
@@ -154,8 +194,8 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
 
             </div>
 
-            <!-- Lower row -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 fade-in d5">
+            <!-- Lower row — stretches to fill remaining screen height -->
+            <div class="lower-row fade-in d5">
 
                 <!-- Today's appointments -->
                 <div class="panel-card rounded-xl p-5">
@@ -163,7 +203,7 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
                         <h3 class="panel-card-title text-sm font-semibold">Today's Appointments</h3>
                         <a href="appointments/list.php" class="panel-card-link text-xs font-medium">View all →</a>
                     </div>
-                    <div class="flex flex-col gap-2">
+                    <div class="panel-body flex flex-col gap-2">
                         <p class="panel-card-empty text-xs text-center py-6">No appointments scheduled for today.</p>
                     </div>
                 </div>
@@ -173,31 +213,34 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="panel-card-title text-sm font-semibold">Quick Actions</h3>
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <a href="appointments/new.php" class="qa-tile qa-tile--teal flex items-center gap-2 p-3 rounded-lg">
-                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                            </svg>
-                            <span class="text-xs font-medium">New Appointment</span>
-                        </a>
-                        <a href="students/add.php" class="qa-tile qa-tile--blue flex items-center gap-2 p-3 rounded-lg">
-                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                            </svg>
-                            <span class="text-xs font-medium">Add Student</span>
-                        </a>
-                        <a href="medical/visits.php" class="qa-tile qa-tile--amber flex items-center gap-2 p-3 rounded-lg">
-                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            <span class="text-xs font-medium">Visit History</span>
-                        </a>
-                        <a href="reports/daily.php" class="qa-tile qa-tile--gray flex items-center gap-2 p-3 rounded-lg">
-                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                            </svg>
-                            <span class="text-xs font-medium">Daily Report</span>
-                        </a>
+                    <div class="panel-body">
+                        <div class="grid grid-cols-2 gap-3">
+                            <a href="appointments/new.php" class="qa-tile qa-tile--teal flex items-center gap-2 p-3 rounded-lg">
+                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                </svg>
+                                <span class="text-xs font-medium">New Appointment</span>
+                            </a>
+                            <!-- Fixed: correct path to add.php inside students/ subfolder -->
+                            <a href="students/add.php" class="qa-tile qa-tile--blue flex items-center gap-2 p-3 rounded-lg">
+                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                                </svg>
+                                <span class="text-xs font-medium">Add Student</span>
+                            </a>
+                            <a href="medical/visits.php" class="qa-tile qa-tile--amber flex items-center gap-2 p-3 rounded-lg">
+                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <span class="text-xs font-medium">Visit History</span>
+                            </a>
+                            <a href="reports/daily.php" class="qa-tile qa-tile--gray flex items-center gap-2 p-3 rounded-lg">
+                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                                <span class="text-xs font-medium">Daily Report</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
 
