@@ -4,7 +4,6 @@
  *          submenu auto-open, toast notifications, table search.
  */
 
-// ─── Toast System ─────────────────────────────────────────────
 const Toast = {
   _icons: {
     success:
@@ -87,7 +86,6 @@ const Toast = {
 };
 window.Toast = Toast;
 
-// ─── Edit Modal ───────────────────────────────────────────────
 function openEditModal(student) {
   document.getElementById("editStudentModal_id").value = student.id;
   document.getElementById("student_number").value = student.student_number;
@@ -99,14 +97,12 @@ function openEditModal(student) {
   openModal("editStudentModal");
 }
 
-// ─── Delete Confirmation ──────────────────────────────────────
 function confirmDeleteStudent(id, name) {
   confirmDeleteWithCallback(id, name, function (itemId) {
     window.location.href = `?action=delete&id=${itemId}`;
   });
 }
 
-// ─── Table Search ─────────────────────────────────────────────
 function initSearch() {
   const input = document.getElementById("studentSearch");
   const clearBtn = document.getElementById("searchClear");
@@ -182,7 +178,6 @@ function escapeHtml(str) {
   });
 }
 
-// ─── Flash → Toast bridge ─────────────────────────────────────
 function bridgeFlashAlerts() {
   document.querySelectorAll(".clinic-alert").forEach(function (el) {
     let type = "info";
@@ -200,12 +195,10 @@ function bridgeFlashAlerts() {
   });
 }
 
-// ─── DOM Ready ────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", function () {
   bridgeFlashAlerts();
   initSearch();
 
-  // ── Sidebar link correction ────────────────────────────
   const isInSubfolder = window.location.pathname.includes("/students/");
   document
     .querySelectorAll("nav a, .sidebar a, aside a")
@@ -235,7 +228,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-  // ── Auto-open Students submenu ─────────────────────────
   const studentPages = ["list.php", "add.php"];
   const currentPage = window.location.pathname.split("/").pop();
   if (studentPages.includes(currentPage)) {
