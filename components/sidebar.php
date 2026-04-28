@@ -5,11 +5,18 @@ class Sidebar
     private $userRole;
     private $userName;
 
+    private static $appRoot = '';
+
     public function __construct($activeMenu = '', $userRole = 'admin', $userName = 'User')
     {
         $this->activeMenu = $activeMenu;
-        $this->userRole = $userRole;
-        $this->userName = $userName;
+        $this->userRole   = $userRole;
+        $this->userName   = $userName;
+    }
+
+    private function url($link)
+    {
+        return self::$appRoot . '/' . ltrim($link, '/');
     }
 
     public function render()
@@ -54,7 +61,7 @@ class Sidebar
 
             <!-- Footer -->
             <div class="p-3" style="border-top:1px solid rgba(255,255,255,0.07);">
-                <a href="logout.php"
+                <a href="<?php echo htmlspecialchars($this->url('logout.php')); ?>"
                     class="flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-200"
                     style="color:#e07070;"
                     onmouseover="this.style.background='rgba(224,112,112,0.1)'"
@@ -72,14 +79,13 @@ class Sidebar
 
     private function getMenuItems()
     {
-        $menuItems  = $this->defineMenuItems();
-        $html       = '';
+        $menuItems   = $this->defineMenuItems();
+        $html        = '';
         $lastSection = null;
 
         foreach ($menuItems as $key => $item) {
             if (!$this->hasAccess($item)) continue;
 
-            // Section labels
             $section = $item['section'] ?? null;
             if ($section && $section !== $lastSection) {
                 $html .= '<p class="text-xs font-medium uppercase tracking-widest px-2 mt-4 mb-1" style="color:#4a7a65; font-size:9px; letter-spacing:0.08em;">'
@@ -129,9 +135,9 @@ class Sidebar
                 'link'  => 'students.php',
                 'roles' => ['admin', 'nurse'],
                 'submenu' => [
-                    ['icon' => 'M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z', 'label' => 'Add Student',     'link' => 'students/add.php',          'roles' => ['admin']],
-                    ['icon' => 'M4 6h16M4 10h16M4 14h16M4 18h16',                                                        'label' => 'Student List',    'link' => 'students/list.php',         'roles' => ['admin', 'nurse']],
-                    ['icon' => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z', 'label' => 'Health Records', 'link' => 'students/health-records.php', 'roles' => ['admin', 'nurse']],
+                    ['icon' => 'M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z',                                                                                                                                  'label' => 'Add Student',    'link' => 'students/add.php',                         'roles' => ['admin']],
+                    ['icon' => 'M4 6h16M4 10h16M4 14h16M4 18h16',                                                                                                                                                                                        'label' => 'Student List',   'link' => 'students/list.php',                        'roles' => ['admin', 'nurse']],
+                    ['icon' => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',                                                                                                  'label' => 'Health Records', 'link' => 'health-records/health-records.php',        'roles' => ['admin', 'nurse']],
                 ],
             ],
             'medical-records' => [
@@ -141,9 +147,21 @@ class Sidebar
                 'link'  => 'medical-records.php',
                 'roles' => ['admin', 'nurse'],
                 'submenu' => [
-                    ['icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', 'label' => 'Visit History',   'link' => 'medical/visits.php',      'roles' => ['admin', 'nurse']],
-                    ['icon' => 'M20 12H4M12 4v16',                                                                                                                                 'label' => 'Medications',      'link' => 'medical/medications.php', 'roles' => ['admin', 'nurse']],
-                    ['icon' => 'M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',                 'label' => 'Medical Reports',  'link' => 'medical/reports.php',     'roles' => ['admin', 'nurse']],
+                    ['icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', 'label' => 'Visit History',  'link' => 'medical/visits.php',      'roles' => ['admin', 'nurse']],
+                    ['icon' => 'M20 12H4M12 4v16',                                                                                                                                 'label' => 'Medications',     'link' => 'medical/medications.php', 'roles' => ['admin', 'nurse']],
+                    ['icon' => 'M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',                 'label' => 'Medical Reports', 'link' => 'medical/reports.php',     'roles' => ['admin', 'nurse']],
+                ],
+            ],
+            'dental-records' => [
+                'section' => 'Records',
+                'icon'  => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01',
+                'label' => 'Dental Records',
+                'link'  => 'dental-records.php',
+                'roles' => ['admin', 'nurse'],
+                'submenu' => [
+                    ['icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',              'label' => 'Dental Visits',  'link' => 'dental/visits.php',     'roles' => ['admin', 'nurse']],
+                    ['icon' => 'M20 12H4M12 4v16',                                                                                      'label' => 'Treatments',     'link' => 'dental/treatments.php', 'roles' => ['admin', 'nurse']],
+                    ['icon' => 'M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z', 'label' => 'Dental Reports', 'link' => 'dental/reports.php',    'roles' => ['admin', 'nurse']],
                 ],
             ],
             'consultations' => [
@@ -153,9 +171,9 @@ class Sidebar
                 'link'  => 'consultations.php',
                 'roles' => ['admin', 'nurse', 'student', 'teacher'],
                 'submenu' => [
-                    ['icon' => 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z', 'label' => 'Online Consultation',   'link' => 'consultations/online.php',   'roles' => ['student', 'teacher']],
-                    ['icon' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',                                                                                                                                                                             'label' => 'Consultation History',  'link' => 'consultations/history.php',  'roles' => ['admin', 'nurse', 'student', 'teacher']],
-                    ['icon' => 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z',                                                                                                             'label' => 'Messages',              'link' => 'consultations/messages.php', 'roles' => ['admin', 'nurse']],
+                    ['icon' => 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z', 'label' => 'Online Consultation',  'link' => 'consultations/online.php',   'roles' => ['student', 'teacher']],
+                    ['icon' => 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',                                                                                                                                                                             'label' => 'Consultation History', 'link' => 'consultations/history.php',  'roles' => ['admin', 'nurse', 'student', 'teacher']],
+                    ['icon' => 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z',                                                                                                             'label' => 'Messages',             'link' => 'consultations/messages.php', 'roles' => ['admin', 'nurse']],
                 ],
             ],
             'inventory' => [
@@ -165,9 +183,9 @@ class Sidebar
                 'link'  => 'inventory.php',
                 'roles' => ['admin', 'nurse'],
                 'submenu' => [
-                    ['icon' => 'M20 12H4M12 4v16',                                                                                                             'label' => 'Medicines',      'link' => 'inventory/medicines.php', 'roles' => ['admin', 'nurse']],
-                    ['icon' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2', 'label' => 'Supplies',       'link' => 'inventory/supplies.php', 'roles' => ['admin', 'nurse']],
-                    ['icon' => 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', 'label' => 'Stock Reports',  'link' => 'inventory/reports.php',  'roles' => ['admin']],
+                    ['icon' => 'M20 12H4M12 4v16',                                                                                                             'label' => 'Medicines',     'link' => 'inventory/medicines.php', 'roles' => ['admin', 'nurse']],
+                    ['icon' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2', 'label' => 'Supplies',      'link' => 'inventory/supplies.php', 'roles' => ['admin', 'nurse']],
+                    ['icon' => 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', 'label' => 'Stock Reports', 'link' => 'inventory/reports.php',  'roles' => ['admin']],
                 ],
             ],
             'reports' => [
@@ -196,9 +214,9 @@ class Sidebar
                 'link'  => 'settings.php',
                 'roles' => ['admin'],
                 'submenu' => [
-                    ['icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',   'label' => 'Clinic Settings',  'link' => 'settings/clinic.php',        'roles' => ['admin']],
-                    ['icon' => 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z',                                   'label' => 'User Management',  'link' => 'settings/users.php',         'roles' => ['admin']],
-                    ['icon' => 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9', 'label' => 'Notifications', 'link' => 'settings/notifications.php', 'roles' => ['admin']],
+                    ['icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',   'label' => 'Clinic Settings', 'link' => 'settings/clinic.php',        'roles' => ['admin']],
+                    ['icon' => 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z',                                   'label' => 'User Management', 'link' => 'settings/users.php',         'roles' => ['admin']],
+                    ['icon' => 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9', 'label' => 'Notifications',   'link' => 'settings/notifications.php', 'roles' => ['admin']],
                 ],
             ],
         ];
@@ -215,17 +233,16 @@ class Sidebar
         $hasSubmenu = !empty($item['submenu']);
         $itemId     = 'menu-' . $key;
 
-        // Base classes
-        $baseStyle  = 'display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;width:100%;transition:background 0.15s;text-decoration:none;';
+        $baseStyle     = 'display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;width:100%;transition:background 0.15s;text-decoration:none;';
         $activeStyle   = 'background:#2d8a6e;';
         $inactiveStyle = 'background:transparent;';
         $hoverOn  = "this.style.background='" . ($active ? '#2d8a6e' : 'rgba(255,255,255,0.07)') . "'";
         $hoverOff = "this.style.background='" . ($active ? '#2d8a6e' : 'transparent') . "'";
 
-        $html  = '<div class="mb-0.5">';
+        $html = '<div class="mb-0.5">';
 
         if (!$hasSubmenu) {
-            $html .= '<a href="' . htmlspecialchars($item['link']) . '" '
+            $html .= '<a href="' . htmlspecialchars($this->url($item['link'])) . '" '
                 . 'style="' . $baseStyle . ($active ? $activeStyle : $inactiveStyle) . '" '
                 . 'onmouseover="' . $hoverOn . '" onmouseout="' . $hoverOff . '">';
         } else {
@@ -234,17 +251,14 @@ class Sidebar
                 . 'onmouseover="' . $hoverOn . '" onmouseout="' . $hoverOff . '">';
         }
 
-        // Icon
         $iconColor = $active ? '#e1f5ee' : '#7aaa96';
         $html .= '<svg style="width:14px;height:14px;flex-shrink:0;color:' . $iconColor . ';" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">';
         $html .= '<path stroke-linecap="round" stroke-linejoin="round" d="' . $item['icon'] . '"/>';
         $html .= '</svg>';
 
-        // Label
         $labelColor = $active ? '#e1f5ee' : '#9ab5aa';
         $html .= '<span style="font-size:12px;flex:1;text-align:left;color:' . $labelColor . ';">' . htmlspecialchars($item['label']) . '</span>';
 
-        // Arrow for submenu
         if ($hasSubmenu) {
             $html .= '<svg id="arrow-' . $itemId . '" style="width:12px;height:12px;color:#4a7a65;transition:transform 0.2s;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">';
             $html .= '<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>';
@@ -253,17 +267,16 @@ class Sidebar
 
         $html .= $hasSubmenu ? '</button>' : '</a>';
 
-        // Submenu
         if ($hasSubmenu) {
             $html .= '<ul id="' . $itemId . '" class="hidden" style="margin-left:20px;margin-top:2px;">';
             foreach ($item['submenu'] as $subitem) {
                 if (!$this->hasAccess($subitem)) continue;
-                $subActive = ($this->activeMenu === $subitem['label'] || $this->activeMenu === $subitem['link']);
-                $subBg     = $subActive ? '#2d8a6e' : 'transparent';
+                $subActive   = ($this->activeMenu === $subitem['label'] || $this->activeMenu === $subitem['link']);
+                $subBg       = $subActive ? '#2d8a6e' : 'transparent';
                 $subHoverOn  = "this.style.background='" . ($subActive ? '#2d8a6e' : 'rgba(255,255,255,0.06)') . "'";
                 $subHoverOff = "this.style.background='" . $subBg . "'";
                 $html .= '<li class="mb-0.5">';
-                $html .= '<a href="' . htmlspecialchars($subitem['link']) . '" '
+                $html .= '<a href="' . htmlspecialchars($this->url($subitem['link'])) . '" '
                     . 'style="display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:6px;text-decoration:none;background:' . $subBg . ';" '
                     . 'onmouseover="' . $subHoverOn . '" onmouseout="' . $subHoverOff . '">';
                 $subIconColor  = $subActive ? '#e1f5ee' : '#4a7a65';

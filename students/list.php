@@ -218,10 +218,8 @@ $deleteModal = DeleteConfirm::render('deleteConfirmModal', 'student', '');
 
         <main class="px-5 py-6 sm:px-6">
 
-            <!-- Flash alerts are bridged to toasts by students.js -->
-            <div id="alert-container" style="display:none;">
-                <?php echo Alert::displayFlash(); ?>
-            </div>
+            <!-- Flash alert -->
+            <?php echo Alert::displayFlash(); ?>
 
             <!-- Page header + Add button + Search -->
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-5">
@@ -388,7 +386,6 @@ $deleteModal = DeleteConfirm::render('deleteConfirmModal', 'student', '');
 
     <!-- Scripts -->
     <script src="../js/sidebar.js"></script>
-    <script src="../js/alerts.js"></script>
     <script src="../js/modal.js"></script>
     <?php echo DeleteConfirm::getScript(); ?>
     <script src="../js/students.js"></script>

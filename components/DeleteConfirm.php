@@ -54,47 +54,52 @@ class DeleteConfirm
     public static function getScript()
     {
         return '
-        <script>
-        let deleteCallback = null;
+    <script>
+    let deleteCallback = null;
+    
+    function confirmDeleteWithCallback(itemId, itemName, callback) {
+        const modal = document.getElementById("deleteConfirmModal");
+        const messageEl = document.getElementById("deleteConfirmMessage");
         
-        function confirmDeleteWithCallback(itemId, itemName, callback) {
-            const modal = document.getElementById("deleteConfirmModal");
-            const messageEl = document.getElementById("deleteConfirmMessage");
+        if (modal && messageEl) {
+            messageEl.innerHTML = `Are you sure you want to delete <strong style="color:#1a2e25;">${escapeHtml(itemName)}</strong>?<br><span style="font-size:0.72rem; color:#c0504d; margin-top:0.25rem; display:block;">This action cannot be undone.</span>`;
             
-            if (modal && messageEl) {
-                messageEl.innerHTML = `Are you sure you want to delete <strong class="text-gray-900">${escapeHtml(itemName)}</strong>?<br><span class="text-xs text-red-500 mt-1 block">This action cannot be undone.</span>`;
-                
-                // Store the callback
-                deleteCallback = function() {
-                    callback(itemId);
-                    closeModal("deleteConfirmModal");
-                };
-                
-                // Show modal
-                modal.style.display = "flex";
-                
-                // Setup confirm button
-                const confirmBtn = document.getElementById("confirmDeleteBtn");
-                if (confirmBtn) {
-                    // Remove existing listener to avoid duplicates
-                    const newBtn = confirmBtn.cloneNode(true);
-                    confirmBtn.parentNode.replaceChild(newBtn, confirmBtn);
-                    newBtn.addEventListener("click", function() {
-                        if (deleteCallback) {
-                            deleteCallback();
-                            deleteCallback = null;
-                        }
-                    });
-                }
+            // Store the callback
+            deleteCallback = function() {
+                callback(itemId);
+                closeModal("deleteConfirmModal");
+            };
+            
+            // Show modal with animation
+            modal.style.display = "flex";
+           const box = modal.querySelector(".modal-content");
+            if (box) {
+                box.classList.remove("animate-slide-down");
+                void box.offsetWidth; // force reflow
+                box.classList.add("animate-slide-down");
+            }
+            
+            // Setup confirm button
+            const confirmBtn = document.getElementById("confirmDeleteBtn");
+            if (confirmBtn) {
+                const newBtn = confirmBtn.cloneNode(true);
+                confirmBtn.parentNode.replaceChild(newBtn, confirmBtn);
+                newBtn.addEventListener("click", function() {
+                    if (deleteCallback) {
+                        deleteCallback();
+                        deleteCallback = null;
+                    }
+                });
             }
         }
-        
-        function escapeHtml(text) {
-            const div = document.createElement("div");
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        </script>
-        ';
+    }
+    
+    function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    </script>
+    ';
     }
 }
