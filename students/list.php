@@ -122,14 +122,11 @@ $editFields = [
         'label'    => 'Course',
         'required' => true,
         'options'  => [
-            'Computer Science'       => 'Computer Science',
-            'Information Technology' => 'Information Technology',
-            'Engineering'            => 'Engineering',
-            'Business Administration' => 'Business Administration',
-            'Nursing'                => 'Nursing',
             'Education'              => 'Education',
-            'Psychology'             => 'Psychology',
-            'Other'                  => 'Other',
+            'Information Technology' => 'Information Technology',
+            'Criminology'                => 'Criminology',
+            'Business Administration' => 'Business Administration',
+            'Human Services' => 'Human Services',
         ],
     ],
     [
@@ -142,8 +139,6 @@ $editFields = [
             '2' => 'Year 2',
             '3' => 'Year 3',
             '4' => 'Year 4',
-            '5' => 'Year 5',
-            '6' => 'Year 6',
         ],
     ],
 ];
