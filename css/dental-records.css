@@ -1,0 +1,731 @@
+/* ── CSS Variables (matching health-record.css) ───────────── */
+:root {
+  --color-primary: #2d8a6e;
+  --color-primary-dark: #236b56;
+  --color-surface: #ffffff;
+  --color-border: #e5ede9;
+  --color-text-main: #1a2e25;
+  --color-text-muted: #7aaa96;
+  --tint-teal: rgba(45, 138, 110, 0.08);
+  --tint-red: rgba(192, 80, 77, 0.08);
+}
+
+/* ── Reset / base ─────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "DM Sans", sans-serif;
+  background: #f4f6f4;
+  color: var(--color-text-main);
+}
+
+/* ── Fade-in animation (matches health-record.css) ────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeInUp 0.35s ease forwards;
+}
+.d1 {
+  animation-delay: 0.05s;
+}
+.d2 {
+  animation-delay: 0.1s;
+}
+.d3 {
+  animation-delay: 0.15s;
+}
+.d4 {
+  animation-delay: 0.2s;
+}
+
+/* ── Topbar ───────────────────────────────────────────────── */
+.topbar {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+.topbar-title {
+  color: var(--color-text-main);
+  margin: 0;
+}
+.topbar-subtitle {
+  color: var(--color-text-muted);
+  margin: 0;
+}
+.topbar-date {
+  background: #f0f8f5;
+  color: #4a7a65;
+  border: 1px solid #d4ece4;
+}
+.topbar-avatar {
+  background: var(--color-primary);
+  color: #e1f5ee;
+}
+.topbar-user-name {
+  color: var(--color-text-main);
+  margin: 0;
+}
+.topbar-user-email {
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ── Mobile menu button ───────────────────────────────────── */
+.mobile-menu-btn {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-main);
+  cursor: pointer;
+}
+
+/* ── Page header text ─────────────────────────────────────── */
+.dental-page-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #2c4b3e;
+}
+.dental-page-subtitle {
+  font-size: 0.72rem;
+  color: #8bae9d;
+  margin-top: 0.2rem;
+}
+
+/* ── Stat cards ───────────────────────────────────────────── */
+.dental-stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.dental-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(45, 138, 110, 0.08);
+}
+
+.dental-stat-label {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+.dental-stat-value {
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-text-main);
+}
+.dental-stat-value--teal {
+  color: var(--color-primary);
+}
+.dental-stat-value--blue {
+  color: #3b82f6;
+}
+.dental-stat-value--yellow {
+  color: #f59e0b;
+}
+
+/* Stat icon badges */
+.dental-stat-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.dental-stat-icon--teal {
+  background: var(--tint-teal);
+  color: var(--color-primary);
+}
+.dental-stat-icon--blue {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+.dental-stat-icon--yellow {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+/* ── Dental record cards ──────────────────────────────────── */
+.dental-record-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+.dental-record-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(45, 138, 110, 0.1);
+  border-color: #b8ddd1;
+}
+
+/* Avatar initials */
+.dental-card-avatar {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.5rem;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.02em;
+}
+
+.dental-card-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #2c4b3e;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dental-card-meta {
+  font-size: 0.7rem;
+  color: #8bae9d;
+  margin-top: 0.15rem;
+}
+
+.dental-field-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 0.25rem;
+}
+.dental-field-value {
+  font-size: 0.8rem;
+  color: #4a5568;
+  line-height: 1.5;
+}
+.dental-field-value--empty {
+  color: #b0c4bb;
+  font-style: italic;
+}
+
+.dental-card-footer {
+  padding-top: 0.6rem;
+  border-top: 1px solid #f0f4f2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dental-card-date {
+  font-size: 0.68rem;
+  color: #8bae9d;
+}
+.dental-card-view-hint {
+  font-size: 0.65rem;
+  color: #b0c4bb;
+  transition: color 0.15s;
+}
+.dental-record-card:hover .dental-card-view-hint {
+  color: var(--color-primary);
+}
+
+/* ── Edit button ──────────────────────────────────────────── */
+.dental-edit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.4rem;
+  border: 1px solid #d4ece4;
+  background: #f0f8f5;
+  color: var(--color-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    transform 0.15s;
+}
+.dental-edit-btn:hover {
+  background: #d4ece4;
+  border-color: #a8d4c6;
+  transform: scale(1.08);
+}
+
+/* ── Delete button ────────────────────────────────────────── */
+.dental-delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.4rem;
+  border: 1px solid #fce8e8;
+  background: #fff5f5;
+  color: #c0504d;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    transform 0.15s;
+}
+.dental-delete-btn:hover {
+  background: #fce8e8;
+  border-color: #e9b4b4;
+  transform: scale(1.08);
+}
+
+/* ── Add Record button ────────────────────────────────────── */
+.dental-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background 0.15s,
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+.dental-add-btn:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(45, 138, 110, 0.3);
+}
+
+/* ── Search bar ───────────────────────────────────────────── */
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  color: #8bae9d;
+  pointer-events: none;
+  transition: color 0.2s;
+}
+.search-input {
+  padding: 0.45rem 2.5rem 0.45rem 2.25rem;
+  border: 1.5px solid #dce8e2;
+  border-radius: 0.625rem;
+  font-size: 0.78rem;
+  font-family: "DM Sans", system-ui, sans-serif;
+  color: #1f2e26;
+  background: #f9fbf9;
+  width: 220px;
+  transition: all 0.2s ease;
+}
+.search-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(45, 138, 110, 0.1);
+  width: 260px;
+}
+.search-input::placeholder {
+  color: #a8c0b6;
+}
+
+.search-clear {
+  position: absolute;
+  right: 0.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #a8c0b6;
+  padding: 0.1rem;
+  border-radius: 0.25rem;
+  display: none;
+  align-items: center;
+  transition: color 0.15s;
+}
+.search-clear:hover {
+  color: var(--color-primary);
+}
+.search-clear.visible {
+  display: flex;
+}
+
+/* ── No-results state ─────────────────────────────────────── */
+.dental-no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem 1rem;
+  background: var(--color-surface);
+  border-radius: 0.75rem;
+  border: 1px dashed var(--color-border);
+}
+
+/* ── Empty state ──────────────────────────────────────────── */
+.dental-empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 1rem;
+  background: var(--color-surface);
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-border);
+}
+.dental-empty-icon {
+  color: #d1ddd8;
+  margin: 0 auto 1rem;
+}
+.dental-empty-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2c4b3e;
+}
+.dental-empty-subtitle {
+  font-size: 0.75rem;
+  color: #8bae9d;
+  margin-top: 0.25rem;
+}
+
+/* ── SVG icon size ────────────────────────────────────────── */
+.hr-icon {
+  width: 16px;
+  height: 16px;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* ── Modal backdrop ───────────────────────────────────────── */
+.hr-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  left: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+@media (min-width: 1024px) {
+  .hr-modal-backdrop {
+    left: 224px;
+  }
+}
+
+/* ── Modal container ──────────────────────────────────────── */
+.hr-modal {
+  background: var(--color-surface);
+  border-radius: 14px;
+  border: 1px solid var(--color-border);
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.hr-modal--lg {
+  max-width: 52rem;
+}
+.hr-modal--md {
+  max-width: 42rem;
+}
+
+.hr-modal form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.animate-modal {
+  animation: modalIn 0.18s ease;
+}
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Modal header ─────────────────────────────────────────── */
+.hr-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  flex-shrink: 0;
+}
+.hr-modal-header-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(45, 138, 110, 0.12);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.hr-modal-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin: 0;
+  line-height: 1.3;
+}
+.hr-modal-subtitle {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 2px 0 0;
+  line-height: 1.3;
+}
+.hr-modal-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.hr-modal-close:hover {
+  background: #f0f8f5;
+  color: var(--color-text-main);
+}
+
+/* ── Divider ──────────────────────────────────────────────── */
+.hr-modal-divider {
+  height: 1px;
+  background: var(--color-border);
+  flex-shrink: 0;
+}
+
+/* ── Modal body ───────────────────────────────────────────── */
+.hr-modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: #b0d4c6 transparent;
+}
+
+/* ── Modal footer ─────────────────────────────────────────── */
+.hr-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 14px 20px;
+  flex-shrink: 0;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.hr-btn {
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: "DM Sans", sans-serif;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+  line-height: 1.4;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.hr-btn-primary {
+  background: var(--color-primary);
+  color: #ffffff;
+  border: 1px solid var(--color-primary);
+}
+.hr-btn-primary:hover {
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+.hr-btn-ghost {
+  background: transparent;
+  color: #4a7a65;
+  border: 1px solid #d4ece4;
+}
+.hr-btn-ghost:hover {
+  background: #f0f8f5;
+}
+
+/* ── Form helpers ─────────────────────────────────────────── */
+.hr-form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.hr-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.hr-form-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+  display: block;
+}
+.hr-required {
+  color: #e05050;
+  margin-left: 2px;
+}
+
+.hr-form-input,
+.hr-form-select,
+.hr-form-textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: "DM Sans", sans-serif;
+  color: var(--color-text-main);
+  background: var(--color-surface);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+  appearance: auto;
+  box-sizing: border-box;
+}
+.hr-form-input:focus,
+.hr-form-select:focus,
+.hr-form-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(45, 138, 110, 0.12);
+}
+.hr-form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* ── Procedure rows ───────────────────────────────────────── */
+.hr-procedure-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  align-items: flex-start;
+}
+.hr-procedure-row .hr-form-select,
+.hr-procedure-row .hr-form-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.hr-remove-btn {
+  flex-shrink: 0;
+  width: 30px;
+  height: 35px;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  background: transparent;
+  color: #ef4444;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background 0.15s;
+}
+.hr-remove-btn:hover {
+  background: #fef2f2;
+}
+
+.hr-add-procedure-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 4px;
+  font-size: 13px;
+  font-family: "DM Sans", sans-serif;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.hr-add-procedure-btn:hover {
+  color: var(--color-primary-dark);
+}
+
+/* ── Modal slide animation ────────────────────────────────── */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-40px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.animate-slide-down {
+  animation: slideDown 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .hr-modal-body {
+    padding: 14px;
+  }
+  .hr-modal-header {
+    padding: 12px 14px;
+  }
+  .hr-modal-footer {
+    padding: 10px 14px;
+  }
+  .hr-procedure-row {
+    flex-direction: column;
+  }
+  .hr-remove-btn {
+    width: 100%;
+    height: 32px;
+  }
+}

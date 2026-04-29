@@ -138,6 +138,7 @@ class Sidebar
                     ['icon' => 'M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z',                                                                                                                                  'label' => 'Add Student',    'link' => 'students/add.php',                         'roles' => ['admin']],
                     ['icon' => 'M4 6h16M4 10h16M4 14h16M4 18h16',                                                                                                                                                                                        'label' => 'Student List',   'link' => 'students/list.php',                        'roles' => ['admin', 'nurse']],
                     ['icon' => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',                                                                                                  'label' => 'Health Records', 'link' => 'health-records/health-records.php',        'roles' => ['admin', 'nurse']],
+                    ['icon' => 'M12 4.5a7.5 7.5 0 00-7.5 7.5c0 3.5 2.5 6.5 6 7.2V21h3v-1.8c3.5-0.7 6-3.7 6-7.2 0-4.15-3.35-7.5-7.5-7.5z M12 9a3 3 0 100 6 3 3 0 000-6z M9 20.5v-2.5h6v2.5H9z', 'label' => 'Dental Records', 'link' => 'health-records/dental-records.php',        'roles' => ['admin', 'nurse']],
                 ],
             ],
             'medical-records' => [
@@ -154,14 +155,14 @@ class Sidebar
             ],
             'dental-records' => [
                 'section' => 'Records',
-                'icon'  => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01',
+                'icon'  => 'M12 4.5a7.5 7.5 0 00-7.5 7.5c0 3.5 2.5 6.5 6 7.2V21h3v-1.8c3.5-0.7 6-3.7 6-7.2 0-4.15-3.35-7.5-7.5-7.5z M12 9a3 3 0 100 6 3 3 0 000-6z M9 20.5v-2.5h6v2.5H9z',
                 'label' => 'Dental Records',
                 'link'  => 'dental-records.php',
                 'roles' => ['admin', 'nurse'],
                 'submenu' => [
-                    ['icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',              'label' => 'Dental Visits',  'link' => 'dental/visits.php',     'roles' => ['admin', 'nurse']],
-                    ['icon' => 'M20 12H4M12 4v16',                                                                                      'label' => 'Treatments',     'link' => 'dental/treatments.php', 'roles' => ['admin', 'nurse']],
-                    ['icon' => 'M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z', 'label' => 'Dental Reports', 'link' => 'dental/reports.php',    'roles' => ['admin', 'nurse']],
+                    ['icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',                      'label' => 'Dental Visits',   'link' => 'dental/visits.php',     'roles' => ['admin', 'nurse']],
+                    ['icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', 'label' => 'Treatments',        'link' => 'dental/treatments.php', 'roles' => ['admin', 'nurse']],
+                    ['icon' => 'M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',   'label' => 'Dental Reports',   'link' => 'dental/reports.php',    'roles' => ['admin', 'nurse']],
                 ],
             ],
             'consultations' => [
