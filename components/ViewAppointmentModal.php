@@ -47,7 +47,6 @@ class ViewAppointmentModal
                 </div>
             </div>
         </div>
-        </div>
 
         <style>
             @keyframes aptSlideDown {
@@ -66,7 +65,6 @@ class ViewAppointmentModal
                 animation: aptSlideDown 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
             }
 
-            /* Box */
             .vam-box {
                 background: #fff;
                 border-radius: 14px;
@@ -76,19 +74,14 @@ class ViewAppointmentModal
                 max-height: 90vh;
                 overflow-y: auto;
                 margin: 16px;
-
-                /* Hide scrollbar — Firefox */
                 scrollbar-width: none;
-                /* Hide scrollbar — IE/Edge */
                 -ms-overflow-style: none;
             }
 
-            /* Hide scrollbar — Chrome/Safari */
             .vam-box::-webkit-scrollbar {
                 display: none;
             }
 
-            /* Header */
             .vam-header {
                 display: flex;
                 align-items: center;
@@ -142,12 +135,10 @@ class ViewAppointmentModal
                 color: #1a2e25;
             }
 
-            /* Body */
             .vam-body {
                 padding: 16px 18px;
             }
 
-            /* Loading */
             .vam-loading {
                 text-align: center;
                 padding: 40px 0;
@@ -172,7 +163,6 @@ class ViewAppointmentModal
                 }
             }
 
-            /* Service / status row */
             .vam-service-row {
                 display: flex;
                 justify-content: space-between;
@@ -194,7 +184,6 @@ class ViewAppointmentModal
                 color: #8aa898;
             }
 
-            /* Detail rows */
             .vam-detail-row {
                 display: flex;
                 gap: 14px;
@@ -244,7 +233,6 @@ class ViewAppointmentModal
                 font-weight: 500;
             }
 
-            /* Cap bar */
             .vam-cap-bar {
                 height: 5px;
                 background: #e5e7eb;
@@ -264,7 +252,6 @@ class ViewAppointmentModal
                 background: #64b99a;
             }
 
-            /* Note box */
             .vam-note-box {
                 background: #f8faf8;
                 border-left: 3px solid #a8d5c2;
@@ -276,7 +263,6 @@ class ViewAppointmentModal
                 margin-top: 5px;
             }
 
-            /* Meta footer */
             .vam-meta-row {
                 padding-top: 12px;
                 border-top: 1px solid #eef0ec;
@@ -285,7 +271,6 @@ class ViewAppointmentModal
                 color: #aab8b0;
             }
 
-            /* Modal footer */
             .vam-footer {
                 padding: 13px 18px;
                 border-top: 1px solid #eef0ec;
@@ -310,22 +295,6 @@ class ViewAppointmentModal
             .vam-btn-close:hover {
                 background: #eef0ec;
             }
-
-            .vam-btn-edit {
-                padding: 7px 18px;
-                font-size: 12.5px;
-                border-radius: 8px;
-                border: none;
-                background: #2d8a6e;
-                color: #fff;
-                font-weight: 600;
-                cursor: pointer;
-                transition: background 0.15s;
-            }
-
-            .vam-btn-edit:hover {
-                background: #247a60;
-            }
         </style>
 
         <script>
@@ -348,7 +317,6 @@ class ViewAppointmentModal
                 modal.classList.add('flex');
                 document.body.style.overflow = 'hidden';
 
-                // Re-trigger animation
                 box.classList.remove('apt-modal-animate');
                 void box.offsetWidth;
                 box.classList.add('apt-modal-animate');
@@ -362,7 +330,8 @@ class ViewAppointmentModal
                             content.innerHTML = vamErrorHtml(data.message || 'Unknown error');
                         }
                     })
-                    .catch(() => {
+                    .catch((error) => {
+                        console.error('Error loading appointment:', error);
                         content.innerHTML = vamErrorHtml('Failed to load appointment details.');
                     });
             }
@@ -443,6 +412,9 @@ class ViewAppointmentModal
                             <span class="vam-detail-value">${filled} / ${max} students</span>
                             <div class="vam-cap-bar">
                                 <div class="vam-cap-fill ${isDone ? 'vam-cap-fill--done' : ''}" style="width:${pct}%"></div>
+                            </div>
+                            <div style="margin-top: 8px; font-size: 12px; color: #2d8a6e;">
+                                <strong>Next Priority Number:</strong> ${filled + 1}
                             </div>
                         </div>
                     </div>

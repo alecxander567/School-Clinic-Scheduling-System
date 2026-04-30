@@ -9,10 +9,10 @@ require_once __DIR__ . '/../components/DeleteConfirm.php';
 
 requireLogin();
 
-$user         = $auth->getCurrentUser();
-$userRole     = $user['role'] ?? 'admin';
-$userName     = $user['name'] ?? 'Admin User';
-$currentPage  = 'View Appointments';
+$user          = $auth->getCurrentUser();
+$userRole      = $user['role'] ?? 'admin';
+$userName      = $user['name'] ?? 'Admin User';
+$currentPage   = 'View Appointments';
 $currentUserId = $_SESSION['user_id'] ?? 1;
 
 global $pdo;
@@ -28,21 +28,20 @@ $appointments = $filterStatus
 $statuses = $appointmentController->getStatuses();
 $sidebar  = new Sidebar($currentPage, $userRole, $userName);
 
-// Badge class helper
 function aptBadgeClass(string $statusName): string
 {
     $s = strtolower($statusName);
-    if (str_contains($s, 'progress'))                        return 'apt-badge--progress';
-    if (str_contains($s, 'cancel'))                          return 'apt-badge--cancelled';
+    if (str_contains($s, 'progress'))                             return 'apt-badge--progress';
+    if (str_contains($s, 'cancel'))                               return 'apt-badge--cancelled';
     if (str_contains($s, 'complet') || str_contains($s, 'done')) return 'apt-badge--completed';
-    if (str_contains($s, 'confirm'))                         return 'apt-badge--confirmed';
+    if (str_contains($s, 'confirm'))                              return 'apt-badge--confirmed';
     return 'apt-badge--scheduled';
 }
 
 function aptDotClass(string $statusName): string
 {
     $s = strtolower($statusName);
-    if (str_contains($s, 'cancel'))                          return 'apt-dot--cancel';
+    if (str_contains($s, 'cancel'))                               return 'apt-dot--cancel';
     if (str_contains($s, 'complet') || str_contains($s, 'done')) return 'apt-dot--done';
     return 'apt-dot--active';
 }
@@ -58,8 +57,8 @@ function aptDotClass(string $statusName): string
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/appointments.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
-    <!-- Modal animation — must be in <head> so it's available before any modal opens -->
     <style>
         @keyframes aptSlideDown {
             from {
@@ -101,11 +100,9 @@ function aptDotClass(string $statusName): string
                     <p class="topbar-subtitle text-xs">Manage and view all scheduled provider visits</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <!-- Date chip -->
                     <span class="topbar-date hidden sm:block text-xs px-3 py-1.5 rounded-lg">
                         <?php echo date('D, M j Y'); ?>
                     </span>
-                    <!-- Notification bell -->
                     <button class="topbar-notif-btn relative w-8 h-8 rounded-lg flex items-center justify-center">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -113,7 +110,6 @@ function aptDotClass(string $statusName): string
                         </svg>
                         <span class="topbar-notif-dot absolute top-1 right-1 w-1.5 h-1.5 rounded-full"></span>
                     </button>
-                    <!-- Avatar + name -->
                     <div class="hidden sm:flex items-center gap-2">
                         <div class="topbar-avatar w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold">
                             <?php echo strtoupper(substr($userName, 0, 2)); ?>
@@ -179,71 +175,115 @@ function aptDotClass(string $statusName): string
                     </div>
                 <?php else: ?>
                     <?php foreach ($appointments as $apt):
-                        $filled = (int)($apt['registered_students'] ?? 0);
-                        $max    = (int)($apt['max_students'] ?? 1);
-                        $pct    = min(100, $max > 0 ? round($filled / $max * 100) : 0);
-                        $sname  = $apt['status_name'] ?? 'Scheduled';
-                        $isDone = str_contains(strtolower($sname), 'complet') || str_contains(strtolower($sname), 'done');
+                        $filled  = (int)($apt['registered_students'] ?? 0);
+                        $max     = (int)($apt['max_students'] ?? 1);
+                        $pct     = min(100, $max > 0 ? round($filled / $max * 100) : 0);
+                        $isFull  = $filled >= $max;
+                        $sname   = $apt['status_name'] ?? 'Scheduled';
+                        $isDone  = str_contains(strtolower($sname), 'complet') || str_contains(strtolower($sname), 'done');
+                        $aptId   = (int)$apt['id'];
                     ?>
-                        <div class="apt-row">
-                            <div class="apt-dot <?php echo aptDotClass($sname); ?>"></div>
+                        <div class="apt-card" id="apt-card-<?php echo $aptId; ?>">
 
-                            <div class="apt-time">
-                                <span class="apt-time-start"><?php echo date('g:i A', strtotime($apt['start_time'])); ?></span>
-                                <div class="apt-time-sep"></div>
-                                <span class="apt-time-end"><?php echo date('g:i', strtotime($apt['end_time'])); ?></span>
+                            <!-- Body -->
+                            <div class="apt-card-body">
+                                <div class="apt-dot <?php echo aptDotClass($sname); ?>"></div>
+
+                                <div class="apt-time">
+                                    <span class="apt-time-start"><?php echo date('g:i A', strtotime($apt['start_time'])); ?></span>
+                                    <div class="apt-time-sep"></div>
+                                    <span class="apt-time-end"><?php echo date('g:i', strtotime($apt['end_time'])); ?></span>
+                                </div>
+
+                                <div class="apt-info">
+                                    <div class="apt-top">
+                                        <span class="apt-name"><?php echo htmlspecialchars($apt['service_name']); ?></span>
+                                        <span class="apt-badge <?php echo aptBadgeClass($sname); ?>">
+                                            <?php echo htmlspecialchars($sname); ?>
+                                        </span>
+                                    </div>
+
+                                    <div class="apt-meta">
+                                        <span class="apt-meta-item">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-width="2" d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                                                <circle cx="12" cy="7" r="4" />
+                                            </svg>
+                                            <?php echo htmlspecialchars($apt['provider_name'] ?? 'N/A'); ?>
+                                        </span>
+                                        <span class="apt-meta-item">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            <?php echo date('F j, Y', strtotime($apt['visit_date'] ?? $apt['created_at'])); ?>
+                                        </span>
+                                    </div>
+
+                                    <!-- Capacity bar + live count -->
+                                    <div class="cap-wrap">
+                                        <div class="cap-bar">
+                                            <div class="cap-fill <?php echo $isDone ? 'cap-fill--done' : ($isFull ? 'cap-fill--full' : ''); ?>"
+                                                id="cap-fill-<?php echo $aptId; ?>"
+                                                style="width:<?php echo $pct; ?>%"></div>
+                                        </div>
+                                        <span class="cap-label" id="cap-label-<?php echo $aptId; ?>">
+                                            <strong><?php echo $filled; ?> / <?php echo $max; ?></strong> students
+                                        </span>
+                                    </div>
+
+                                    <!-- Next priority pill -->
+                                    <?php if ($isFull || $isDone): ?>
+                                        <div class="next-priority next-priority--closed">
+                                            <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                            </svg>
+                                            <?php echo $isDone ? 'Completed' : 'Fully booked'; ?>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="next-priority" id="next-priority-<?php echo $aptId; ?>">
+                                            <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                                            </svg>
+                                            Next priority: <span>#<?php echo $filled + 1; ?></span>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <?php if (!empty($apt['notes'])): ?>
+                                        <p class="apt-note"><?php echo htmlspecialchars(substr($apt['notes'], 0, 120)); ?></p>
+                                    <?php endif; ?>
+                                </div>
                             </div>
 
-                            <div class="apt-body">
-                                <div class="apt-top">
-                                    <span class="apt-name"><?php echo htmlspecialchars($apt['service_name']); ?></span>
-                                    <span class="apt-badge <?php echo aptBadgeClass($sname); ?>">
-                                        <?php echo htmlspecialchars($sname); ?>
-                                    </span>
+                            <!-- Footer -->
+                            <div class="apt-card-footer">
+                                <div class="apt-footer-left">
+                                    <button class="btn-apt-view"
+                                        onclick="viewAppointmentDetails(<?php echo $aptId; ?>)">
+                                        View details
+                                    </button>
+                                    <button class="btn-apt-qr"
+                                        id="qr-btn-<?php echo $aptId; ?>"
+                                        onclick="generateQRCode(<?php echo $aptId; ?>, this)"
+                                        <?php echo ($isFull || $isDone) ? 'disabled' : ''; ?>>
+                                        Generate QR
+                                    </button>
                                 </div>
-                                <div class="apt-meta">
-                                    <span class="apt-meta-item">
-                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-width="2" d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-                                            <circle cx="12" cy="7" r="4" />
-                                        </svg>
-                                        <?php echo htmlspecialchars($apt['provider_name'] ?? 'N/A'); ?>
-                                    </span>
-                                    <span class="apt-meta-item">
-                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
-                                        <?php echo date('F j, Y', strtotime($apt['visit_date'] ?? $apt['created_at'])); ?>
-                                    </span>
-                                    <span class="apt-meta-item">
-                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-width="2" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
-                                        </svg>
-                                        <?php echo $filled; ?> / <?php echo $max; ?> students
-                                    </span>
-                                </div>
-                                <div class="cap-bar">
-                                    <div class="cap-fill <?php echo $isDone ? 'cap-fill--done' : ''; ?>"
-                                        style="width:<?php echo $pct; ?>%"></div>
-                                </div>
-                                <?php if (!empty($apt['notes'])): ?>
-                                    <p class="apt-note"><?php echo htmlspecialchars(substr($apt['notes'], 0, 120)); ?></p>
-                                <?php endif; ?>
-                            </div>
-
-                            <div class="apt-actions">
-                                <button class="btn-apt-view" onclick="viewAppointmentDetails(<?php echo $apt['id']; ?>)">
-                                    View
-                                </button>
                                 <?php if ($userRole === 'admin'): ?>
-                                    <button class="btn-apt-edit" onclick="openEditModal(<?php echo $apt['id']; ?>)">
-                                        Edit
-                                    </button>
-                                    <button class="btn-apt-delete" onclick="deleteAppointment(<?php echo $apt['id']; ?>, '<?php echo htmlspecialchars($apt['service_name'], ENT_QUOTES); ?>', this)">
-                                        Delete
-                                    </button>
+                                    <div class="apt-footer-right">
+                                        <button class="btn-apt-edit"
+                                            onclick="openEditModal(<?php echo $aptId; ?>)">
+                                            Edit
+                                        </button>
+                                        <button class="btn-apt-delete"
+                                            onclick="deleteAppointment(<?php echo $aptId; ?>, '<?php echo htmlspecialchars($apt['service_name'], ENT_QUOTES); ?>', this)">
+                                            Delete
+                                        </button>
+                                    </div>
                                 <?php endif; ?>
                             </div>
+
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -259,6 +299,7 @@ function aptDotClass(string $statusName): string
     <script src="../js/sidebar.js"></script>
     <script src="../js/appointments.js"></script>
     <?php echo DeleteConfirm::getScript(); ?>
+
 </body>
 
 </html>
