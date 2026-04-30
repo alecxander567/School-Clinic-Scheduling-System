@@ -34,6 +34,7 @@ class Auth
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_name'] = $user['name'];
         $_SESSION['user_email'] = $user['email'];
+        $_SESSION['user_role'] = 'admin';
         $_SESSION['is_admin'] = true;
         $_SESSION['logged_in'] = true;
 
@@ -93,11 +94,23 @@ class Auth
             return [
                 'id' => $_SESSION['user_id'],
                 'name' => $_SESSION['user_name'],
-                'email' => $_SESSION['user_email']
+                'email' => $_SESSION['user_email'],
+                'role' => 'admin'
             ];
         }
         return null;
     }
+
+    public function isLoggedIn()
+    {
+        return isLoggedIn();
+    }
+
+    public function requireLogin()
+    {
+        requireLogin();
+    }
 }
 
+// Create the $auth instance
 $auth = new Auth($pdo);

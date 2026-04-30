@@ -334,3 +334,10 @@ body {
 .nav-link.active span {
   color: #e1f5ee !important;
 }
+
+.visits-scroll {
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+

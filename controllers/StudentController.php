@@ -273,4 +273,25 @@ class StudentController
             return false;
         }
     }
+
+    /**
+     * Get total students count with optional time period
+     */
+    public function getTotalStudentsCount($period = null)
+    {
+        try {
+            $sql = "SELECT COUNT(*) as total FROM students";
+
+            if ($period === 'last_month') {
+                $sql .= " WHERE created_at >= DATE_SUB(NOW(), INTERVAL 1 MONTH)";
+            }
+
+            $stmt = $this->db->query($sql);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total'] ?? 0;
+        } catch (PDOException $e) {
+            error_log("Error getting total students count: " . $e->getMessage());
+            return 0;
+        }
+    }
 }

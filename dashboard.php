@@ -1,20 +1,37 @@
 <?php
+require_once __DIR__ . '/config/database.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/config/session.php';
 require_once __DIR__ . '/components/Sidebar.php';
+require_once __DIR__ . '/components/AppointmentModal.php';
+require_once __DIR__ . '/controllers/AppointmentController.php';
 require_once __DIR__ . '/controllers/StudentController.php';
 
+// Require login
 requireLogin();
 
-$user     = $auth->getCurrentUser();
+$user = $auth->getCurrentUser();
 $userRole = $user['role'] ?? 'admin';
 $userName = $user['name'] ?? 'Admin User';
 $currentPage = 'dashboard.php';
 
-// Initialize StudentController to get actual student count
+// Get the current user ID from session
+$currentUserId = $_SESSION['user_id'] ?? 1;
+
+// Initialize controllers
+global $pdo;
+$appointmentController = new AppointmentController($pdo);
 $studentController = new StudentController($auth);
+
 $students = $studentController->getAllStudents();
 $totalStudents = count($students);
+
+// Get appointment statistics
+$totalAppointments = $appointmentController->getTotalAppointmentsCount();
+$pendingConsultations = $appointmentController->getPendingConsultationsCount();
+
+// Get today's appointments
+$todayAppointments = $appointmentController->getAppointmentsByDate(date('Y-m-d'));
 
 $sidebar = new Sidebar($currentPage, $userRole, $userName);
 ?>
@@ -146,6 +163,7 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
             <!-- Stat cards -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
 
+                <!-- Total Appointments Card -->
                 <div class="stat-card fade-in d1 rounded-xl p-4">
                     <div class="flex items-center justify-between mb-3">
                         <div class="stat-icon stat-icon--teal w-8 h-8 rounded-lg">
@@ -153,12 +171,22 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                         </div>
-                        <span class="stat-badge stat-badge--teal text-xs px-2 py-0.5 rounded-full">+4%</span>
+                        <?php
+                        // Calculate percentage change (example logic - you can adjust)
+                        $lastMonthCount = $appointmentController->getTotalAppointmentsCount('last_month');
+                        $percentageChange = $lastMonthCount > 0 ? round((($totalAppointments - $lastMonthCount) / $lastMonthCount) * 100) : 0;
+                        $changeClass = $percentageChange >= 0 ? 'stat-badge--teal' : 'stat-badge--red';
+                        $changeSymbol = $percentageChange >= 0 ? '+' : '';
+                        ?>
+                        <span class="stat-badge <?php echo $changeClass; ?> text-xs px-2 py-0.5 rounded-full">
+                            <?php echo $changeSymbol . $percentageChange; ?>%
+                        </span>
                     </div>
-                    <p class="stat-card-number text-2xl font-semibold">0</p>
+                    <p class="stat-card-number text-2xl font-semibold"><?php echo $totalAppointments; ?></p>
                     <p class="stat-card-label text-xs mt-0.5">Total Appointments</p>
                 </div>
 
+                <!-- Total Students Card -->
                 <div class="stat-card fade-in d2 rounded-xl p-4">
                     <div class="flex items-center justify-between mb-3">
                         <div class="stat-icon stat-icon--blue w-8 h-8 rounded-lg">
@@ -166,12 +194,19 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                             </svg>
                         </div>
-                        <span class="stat-badge stat-badge--blue text-xs px-2 py-0.5 rounded-full">+12</span>
+                        <?php
+                        $lastMonthStudents = $studentController->getTotalStudentsCount('last_month');
+                        $studentPercentageChange = $lastMonthStudents > 0 ? round((($totalStudents - $lastMonthStudents) / $lastMonthStudents) * 100) : 0;
+                        ?>
+                        <span class="stat-badge stat-badge--blue text-xs px-2 py-0.5 rounded-full">
+                            <?php echo $studentPercentageChange >= 0 ? '+' : ''; ?><?php echo $studentPercentageChange; ?>
+                        </span>
                     </div>
                     <p class="stat-card-number text-2xl font-semibold"><?php echo $totalStudents; ?></p>
                     <p class="stat-card-label text-xs mt-0.5">Total Students</p>
                 </div>
 
+                <!-- Pending Consultations Card -->
                 <div class="stat-card fade-in d3 rounded-xl p-4">
                     <div class="flex items-center justify-between mb-3">
                         <div class="stat-icon stat-icon--amber w-8 h-8 rounded-lg">
@@ -179,12 +214,15 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
                             </svg>
                         </div>
-                        <span class="stat-badge stat-badge--amber text-xs px-2 py-0.5 rounded-full">—</span>
+                        <span class="stat-badge stat-badge--amber text-xs px-2 py-0.5 rounded-full">
+                            <?php echo $pendingConsultations > 0 ? 'Active' : 'None'; ?>
+                        </span>
                     </div>
-                    <p class="stat-card-number text-2xl font-semibold">0</p>
+                    <p class="stat-card-number text-2xl font-semibold"><?php echo $pendingConsultations; ?></p>
                     <p class="stat-card-label text-xs mt-0.5">Pending Consultations</p>
                 </div>
 
+                <!-- Low Stock Items Card (placeholder - implement when inventory is ready) -->
                 <div class="stat-card fade-in d4 rounded-xl p-4">
                     <div class="flex items-center justify-between mb-3">
                         <div class="stat-icon stat-icon--red w-8 h-8 rounded-lg">
@@ -192,7 +230,7 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                             </svg>
                         </div>
-                        <span class="stat-badge stat-badge--red text-xs px-2 py-0.5 rounded-full">Alert</span>
+                        <span class="stat-badge stat-badge--red text-xs px-2 py-0.5 rounded-full">Info</span>
                     </div>
                     <p class="stat-card-number text-2xl font-semibold">0</p>
                     <p class="stat-card-label text-xs mt-0.5">Low Stock Items</p>
@@ -202,15 +240,79 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
 
             <!-- Lower row — stretches to fill remaining screen height -->
             <div class="lower-row fade-in d5">
-
-                <!-- Today's appointments -->
+                <!-- Today's Scheduled Visits -->
                 <div class="panel-card rounded-xl p-5">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="panel-card-title text-sm font-semibold">Today's Appointments</h3>
+                        <h3 class="panel-card-title text-sm font-semibold">Today's Scheduled Visits</h3>
                         <a href="appointments/list.php" class="panel-card-link text-xs font-medium">View all →</a>
                     </div>
                     <div class="panel-body flex flex-col gap-2">
-                        <p class="panel-card-empty text-xs text-center py-6">No appointments scheduled for today.</p>
+                        <?php if (empty($todayAppointments)): ?>
+                            <p class="panel-card-empty text-xs text-center py-6">No visits scheduled for today.</p>
+                        <?php else: ?>
+                            <div class="space-y-2 visits-scroll">
+                                <?php foreach ($todayAppointments as $apt):
+                                    $filled = $apt['registered_students'] ?? 0;
+                                    $max    = $apt['max_students'] ?? 1;
+                                    $pct    = min(100, round(($filled / max($max, 1)) * 100));
+                                    $statusLower = strtolower($apt['status_name'] ?? '');
+                                    if (str_contains($statusLower, 'progress')) {
+                                        $badgeStyle = 'background:#e6f1fb;color:#185fa5;';
+                                    } elseif (str_contains($statusLower, 'done') || str_contains($statusLower, 'complet')) {
+                                        $badgeStyle = 'background:#f1efe8;color:#5f5e5a;';
+                                    } else {
+                                        $badgeStyle = 'background:#e1f5ee;color:#0f6e56;';
+                                    }
+                                    $dotColor = str_contains($statusLower, 'done') ? '#b4b2a9' : '#2d8a6e';
+                                    $barColor = str_contains($statusLower, 'done') ? '#b4b2a9' : '#2d8a6e';
+                                ?>
+                                    <div style="display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:10px;border:0.5px solid #ddeee7;background:#f9fcfa;">
+                                        <!-- Status dot -->
+                                        <div style="width:7px;height:7px;border-radius:50%;background:<?php echo $dotColor ?>;flex-shrink:0;margin-top:14px;"></div>
+
+                                        <!-- Time column -->
+                                        <div style="display:flex;flex-direction:column;align-items:center;min-width:46px;padding-top:2px;">
+                                            <span style="font-size:12px;font-weight:500;color:#1a2e25;">
+                                                <?php echo date('g:i A', strtotime($apt['start_time'])); ?>
+                                            </span>
+                                            <div style="width:1.5px;height:18px;background:#c0ddd5;margin:3px 0;border-radius:2px;"></div>
+                                            <span style="font-size:11px;color:#7aaa96;">
+                                                <?php echo date('g:i', strtotime($apt['end_time'])); ?>
+                                            </span>
+                                        </div>
+
+                                        <!-- Body -->
+                                        <div style="flex:1;min-width:0;">
+                                            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">
+                                                <span style="font-size:13px;font-weight:500;color:#1a2e25;">
+                                                    <?php echo htmlspecialchars($apt['service_name']); ?>
+                                                </span>
+                                                <span style="font-size:11px;font-weight:500;padding:2px 8px;border-radius:20px;<?php echo $badgeStyle ?>">
+                                                    <?php echo htmlspecialchars($apt['status_name']); ?>
+                                                </span>
+                                            </div>
+                                            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                                                <span style="font-size:11px;color:#7aaa96;">
+                                                    <?php echo htmlspecialchars($apt['provider_name'] ?? 'N/A'); ?>
+                                                </span>
+                                                <span style="font-size:11px;color:#7aaa96;">
+                                                    <?php echo $filled; ?> / <?php echo $max; ?> students
+                                                </span>
+                                            </div>
+                                            <!-- Capacity bar -->
+                                            <div style="height:3px;border-radius:2px;background:#ddeee7;margin-top:6px;overflow:hidden;">
+                                                <div style="height:100%;border-radius:2px;background:<?php echo $barColor ?>;width:<?php echo $pct ?>%;"></div>
+                                            </div>
+                                            <?php if ($apt['notes']): ?>
+                                                <p style="font-size:11px;color:#9ab5aa;margin-top:6px;padding-top:6px;border-top:0.5px solid #ddeee7;">
+                                                    📝 <?php echo htmlspecialchars(substr($apt['notes'], 0, 100)); ?>
+                                                </p>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
 
@@ -221,12 +323,13 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
                     </div>
                     <div class="panel-body">
                         <div class="grid grid-cols-2 gap-3 h-full">
-                            <a href="appointments/new.php" class="qa-tile qa-tile--teal flex items-center gap-2 p-3 rounded-lg h-full">
+                            <button type="button" onclick="openAppointmentModal()"
+                                class="qa-tile qa-tile--teal flex items-center gap-2 p-3 rounded-lg h-full w-full text-left">
                                 <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                 </svg>
                                 <span class="text-xs font-medium">New Appointment</span>
-                            </a>
+                            </button>
                             <!-- Fixed: correct path to add.php inside students/ subfolder -->
                             <a href="students/add.php" class="qa-tile qa-tile--blue  flex items-center gap-2 p-3 rounded-lg h-full">
                                 <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -253,6 +356,9 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
             </div>
         </main>
     </div>
+
+    <!-- Render the appointment modal with user ID -->
+    <?php AppointmentModal::render($appointmentController, $currentUserId); ?>
 
     <script src="./js/sidebar.js"></script>
 </body>

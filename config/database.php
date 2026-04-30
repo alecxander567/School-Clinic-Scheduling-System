@@ -11,3 +11,29 @@ try {
 } catch (PDOException $e) {
     die("Database Connection Failed: " . $e->getMessage());
 }
+
+// Optional: Create a Database class for other uses
+class Database
+{
+    private static $instance = null;
+    private $pdo;
+
+    private function __construct()
+    {
+        global $pdo;
+        $this->pdo = $pdo;
+    }
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new Database();
+        }
+        return self::$instance;
+    }
+
+    public function getConnection()
+    {
+        return $this->pdo;
+    }
+}

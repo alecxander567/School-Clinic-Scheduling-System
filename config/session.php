@@ -3,13 +3,12 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Check if user is logged in and is admin
+// Helper functions for session management
 function isLoggedIn()
 {
-    return isset($_SESSION['user_id']) && isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
+    return isset($_SESSION['user_id']) && isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 }
 
-// Require admin login for protected pages
 function requireLogin()
 {
     if (!isLoggedIn()) {
@@ -18,7 +17,6 @@ function requireLogin()
     }
 }
 
-// Logout function
 function logout()
 {
     $_SESSION = array();
