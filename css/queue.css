@@ -34,7 +34,6 @@ body {
   color: var(--text-body);
 }
 
-/* Subtle dot-grid background */
 body::before {
   content: "";
   position: fixed;
@@ -263,7 +262,11 @@ label {
   color: #c0504d;
 }
 
+/* ── THE FIX: include all input types ── */
 input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
 select,
 textarea {
   width: 100%;
@@ -282,6 +285,9 @@ textarea {
 }
 
 input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus,
 select:focus,
 textarea:focus {
   border-color: var(--green-deep);
@@ -289,7 +295,10 @@ textarea:focus {
   box-shadow: 0 0 0 3px rgba(45, 138, 110, 0.12);
 }
 
-input::placeholder,
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="tel"]::placeholder,
+input[type="number"]::placeholder,
 textarea::placeholder {
   color: #afc5bb;
 }
@@ -322,6 +331,15 @@ textarea {
   resize: vertical;
   min-height: 5rem;
   line-height: 1.6;
+}
+
+/* ── Field hint ── */
+.field-hint {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--green-hint);
+  margin-top: 2px;
+  line-height: 1.4;
 }
 
 /* ── Divider ── */

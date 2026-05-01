@@ -1,0 +1,14 @@
+# Environment variables
+.env
+
+# Logs
+*.log
+debug.log
+
+# Composer
+vendor/
+composer.phar
+
+# OS files
+.DS_Store
+Thumbs.db

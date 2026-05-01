@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../controllers/QueueController.php';
+require_once __DIR__ . '/../controllers/NotificationController.php';
 
 $token = $_GET['token'] ?? '';
 if (empty($token)) {
@@ -34,18 +35,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $course         = $_POST['course'] ?? '';
     $yearLevel      = $_POST['year_level'] ?? '';
     $contactNumber  = $_POST['contact_number'] ?? '';
+    $email          = $_POST['email'] ?? '';  // Add this line
     $symptoms       = $_POST['symptoms'] ?? '';
 
-    $studentSql = "SELECT id FROM students WHERE student_number = :student_number";
+    $studentSql = "SELECT id, email FROM students WHERE student_number = :student_number";
     $studentStmt = $pdo->prepare($studentSql);
     $studentStmt->execute([':student_number' => $studentNumber]);
     $student = $studentStmt->fetch(PDO::FETCH_ASSOC);
 
     if ($student) {
         $studentId = $student['id'];
+        // Update email if provided and different
+        if ($email && $email != $student['email']) {
+            $updateEmailSql = "UPDATE students SET email = :email WHERE id = :id";
+            $updateEmailStmt = $pdo->prepare($updateEmailSql);
+            $updateEmailStmt->execute([':email' => $email, ':id' => $studentId]);
+        }
     } else {
-        $insertSql = "INSERT INTO students (student_number, first_name, last_name, course, year_level, contact_number)
-                      VALUES (:student_number, :first_name, :last_name, :course, :year_level, :contact_number)";
+        $insertSql = "INSERT INTO students (student_number, first_name, last_name, course, year_level, contact_number, email)
+                      VALUES (:student_number, :first_name, :last_name, :course, :year_level, :contact_number, :email)";
         $insertStmt = $pdo->prepare($insertSql);
         $insertStmt->execute([
             ':student_number'  => $studentNumber,
@@ -53,7 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':last_name'       => $lastName,
             ':course'          => $course,
             ':year_level'      => $yearLevel,
-            ':contact_number'  => $contactNumber
+            ':contact_number'  => $contactNumber,
+            ':email'           => $email
         ]);
         $studentId = $pdo->lastInsertId();
     }
@@ -73,6 +82,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $priorityInfo = $result;
     }
 }
+
+if ($success) {
+    // Get student email
+    $getEmailSql = "SELECT email, first_name, last_name FROM students WHERE id = :id";
+    $getEmailStmt = $pdo->prepare($getEmailSql);
+    $getEmailStmt->execute([':id' => $studentId]);
+    $studentInfo = $getEmailStmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($studentInfo && !empty($studentInfo['email'])) {
+        $notificationController = new NotificationController($pdo);
+        $appointmentDetails = [
+            'visit_date' => $appointment['visit_date'],
+            'start_time' => $appointment['start_time'],
+            'end_time' => $appointment['end_time'],
+            'service_name' => $appointment['service_name'],
+            'provider_name' => $appointment['provider_name']
+        ];
+        $studentName = $studentInfo['first_name'] . ' ' . $studentInfo['last_name'];
+
+        $notificationController->sendQueueConfirmation(
+            $studentInfo['email'],
+            $studentName,
+            $appointmentDetails,
+            $priorityInfo['priority_number']
+        );
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -230,10 +267,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="text" name="student_number" required placeholder="e.g. 2021-00123">
                             </div>
                             <div class="field">
-                                <label>Contact Number <span class="req">*</span></label>
-                                <input type="text" name="contact_number" required placeholder="e.g. 09xx xxx xxxx">
-                            </div>
-                            <div class="field">
                                 <label>First Name <span class="req">*</span></label>
                                 <input type="text" name="first_name" required placeholder="Juan">
                             </div>
@@ -265,6 +298,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <option value="4">4th Year</option>
                                     </select>
                                 </div>
+                            </div>
+                            <div class="field">
+                                <label>Contact Number <span class="req">*</span></label>
+                                <input type="text" name="contact_number" required placeholder="e.g. 09xx xxx xxxx">
+                            </div>
+                            <div class="field">
+                                <label>Email Address <span class="req">*</span></label>
+                                <input type="email" name="email" required placeholder="student@school.edu">
+                                <span class="field-hint">A confirmation will be sent here after registration.</span>
                             </div>
                         </div>
 
