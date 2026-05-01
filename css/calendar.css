@@ -1,0 +1,556 @@
+/* ── Animations ───────────────────────────────────────────── */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulseRing {
+  0% {
+    box-shadow: 0 0 0 0 rgba(45, 138, 110, 0.3);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(45, 138, 110, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(45, 138, 110, 0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.d1 {
+  animation-delay: 0.04s;
+}
+.d2 {
+  animation-delay: 0.09s;
+}
+.d3 {
+  animation-delay: 0.14s;
+}
+.d4 {
+  animation-delay: 0.2s;
+}
+
+/* ── Topbar ───────────────────────────────────────────────── */
+.topbar {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  backdrop-filter: blur(8px);
+}
+
+.topbar-avatar {
+  background: var(--tint-teal);
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.mobile-menu-btn {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* ── Stat cards ───────────────────────────────────────────── */
+.stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.2s ease;
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(45, 138, 110, 0.03) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 12px 32px rgba(45, 138, 110, 0.12),
+    0 2px 8px rgba(45, 138, 110, 0.06);
+}
+
+/* ── Panel cards ──────────────────────────────────────────── */
+.panel-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  position: relative;
+}
+
+/* ── Calendar grid ────────────────────────────────────────── */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+/* Day cells */
+.cal-day {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* change from flex-start to center */
+  padding: 4px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  background: transparent;
+  min-height: 54px;
+  position: relative;
+  text-decoration: none;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.cal-day:hover:not(.cal-day--empty):not(.cal-day--selected) {
+  background: var(--tint-teal);
+  border-color: var(--border-teal);
+  transform: scale(1.05);
+}
+
+.cal-day--empty {
+  background: transparent;
+  cursor: default;
+}
+
+/* Today: subtle teal ring */
+.cal-day--today {
+  background: var(--tint-teal);
+  border-color: var(--color-primary);
+}
+
+.cal-day--today .cal-day-num {
+  color: var(--color-primary-dark);
+  font-weight: 700;
+}
+
+/* Selected: solid primary fill */
+.cal-day--selected {
+  background: var(--color-primary);
+  border-color: var(--color-primary-dark);
+  box-shadow: 0 4px 14px rgba(45, 138, 110, 0.35);
+}
+
+.cal-day--selected .cal-day-num {
+  color: #fff;
+}
+
+.cal-day--selected:hover {
+  transform: none;
+}
+
+/* Number label */
+.cal-day-num {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  line-height: 1;
+  letter-spacing: -0.2px;
+}
+
+/* Appointment dot */
+.cal-dot {
+  display: none;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+/* Count below dot */
+.cal-dot-count {
+  display: none;
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-top: 1px;
+  line-height: 1;
+}
+
+.cal-day--has-appts .cal-dot {
+  display: block;
+}
+.cal-day--has-appts .cal-dot-count {
+  display: block;
+}
+
+.cal-day--selected .cal-dot {
+  background: rgba(255, 255, 255, 0.7);
+}
+.cal-day--selected .cal-dot-count {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.cal-day--today:not(.cal-day--selected) .cal-dot {
+  background: var(--color-primary-dark);
+}
+.cal-day--today:not(.cal-day--selected) .cal-dot-count {
+  color: var(--color-primary-dark);
+}
+
+/* ── Month nav buttons ────────────────────────────────────── */
+.month-nav-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    transform 0.1s;
+  color: var(--color-text-mid);
+  text-decoration: none;
+}
+
+.month-nav-btn:hover {
+  background: var(--tint-teal);
+  border-color: var(--border-teal);
+  color: var(--color-primary-dark);
+  transform: scale(1.08);
+}
+
+/* ── Appointment rows ─────────────────────────────────────── */
+.appts-scroll {
+  max-height: 440px;
+  overflow-y: auto;
+  padding-right: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-teal) transparent;
+}
+
+.appts-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.appts-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.appts-scroll::-webkit-scrollbar-thumb {
+  background: var(--border-teal);
+  border-radius: 4px;
+}
+
+.appt-row {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 11px 13px;
+  background: var(--color-surface);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    transform 0.12s;
+  position: relative;
+}
+
+/* Left accent stripe on hover */
+.appt-row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: var(--color-primary);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.appt-row:hover {
+  border-color: var(--border-teal);
+  box-shadow: 0 4px 16px rgba(45, 138, 110, 0.09);
+  transform: translateX(2px);
+}
+
+.appt-row:hover::before {
+  opacity: 1;
+}
+
+/* ── Month overview chips ─────────────────────────────────── */
+.month-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-main);
+  text-decoration: none;
+  min-width: 54px;
+  transition:
+    border-color 0.15s,
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+
+.month-chip:hover {
+  border-color: var(--border-teal);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(45, 138, 110, 0.1);
+}
+
+.month-chip--selected {
+  background: var(--color-primary);
+  border-color: var(--color-primary-dark);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(45, 138, 110, 0.3);
+}
+
+.month-chip--today {
+  background: var(--tint-teal);
+  border-color: var(--color-primary);
+}
+
+/* ── Delete modal ─────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 30, 22, 0.45);
+  backdrop-filter: blur(3px);
+}
+
+.modal-backdrop.is-open {
+  display: flex;
+  animation: fadeIn 0.2s ease both;
+}
+
+.modal-box {
+  background: var(--color-surface);
+  border-radius: 20px;
+  padding: 28px 24px 24px;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.18),
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  max-width: 360px;
+  width: 100%;
+  margin: 0 16px;
+  border: 1px solid var(--color-border);
+  animation: scaleIn 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Dot-of-week header row ───────────────────────────────── */
+.cal-dow-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 4px 0 6px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+/* ── Legend items ─────────────────────────────────────────── */
+.cal-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border);
+}
+
+.cal-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+/* ── Today shortcut button in topbar ─────────────────────── */
+.today-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--tint-teal);
+  color: var(--color-primary-dark);
+  border: 1px solid var(--border-teal);
+  text-decoration: none;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    transform 0.1s;
+}
+
+.today-btn:hover {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+/* ── New appointment button ───────────────────────────────── */
+.new-appt-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--color-primary);
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 0.2px;
+  transition:
+    background 0.15s,
+    transform 0.1s,
+    box-shadow 0.15s;
+  box-shadow: 0 2px 8px rgba(45, 138, 110, 0.3);
+}
+
+.new-appt-btn:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(45, 138, 110, 0.4);
+}
+
+/* ── Empty state ──────────────────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  gap: 10px;
+  text-align: center;
+}
+
+.empty-state-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--tint-teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+/* ── Subtle section divider ───────────────────────────────── */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-border) 20%,
+    var(--color-border) 80%,
+    transparent
+  );
+  margin: 1rem 0;
+}
+
+/* ── Badge status chips ───────────────────────────────────── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  border-width: 1px;
+  border-style: solid;
+  white-space: nowrap;
+}
+
+/* ── Action icon buttons ──────────────────────────────────── */
+.icon-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition:
+    opacity 0.15s,
+    transform 0.1s;
+}
+
+.icon-btn:hover {
+  opacity: 0.75;
+  transform: scale(1.1);
+}
+
+/* ── Timeline connector in appt rows ─────────────────────── */
+.timeline-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(45, 138, 110, 0.2);
+}
+
+.timeline-line {
+  width: 1.5px;
+  flex: 1;
+  min-height: 24px;
+  margin: 3px 0;
+  background: linear-gradient(to bottom, var(--border-teal), transparent);
+  border-radius: 1px;
+}

@@ -11,26 +11,24 @@ class DentalRecordController
     // Get all dental visits
     public function getAllDentalRecords()
     {
-        $query = "SELECT DISTINCT 
-                         v.id as visit_id,
-                         v.visit_date,
-                         v.diagnosis,
-                         v.treatment,
-                         s.id as student_id,
-                         s.first_name,
-                         s.last_name,
-                         s.student_number,
-                         s.course,
-                         s.year_level,
-                         GROUP_CONCAT(dp.procedure_name SEPARATOR ', ') as procedures,
-                         GROUP_CONCAT(dp.description SEPARATOR ' | ') as procedure_details
-                  FROM visits v
-                  JOIN appointments a ON v.appointment_id = a.id
-                  JOIN requesters r ON a.requester_id = r.id
-                  JOIN students s ON r.student_id = s.id
-                  LEFT JOIN dental_procedures dp ON v.id = dp.visit_id
-                  GROUP BY v.id
-                  ORDER BY v.visit_date DESC";
+        $query = "SELECT 
+                v.id as visit_id,
+                v.visit_date,
+                v.diagnosis,
+                v.treatment,
+                v.student_id,
+                s.first_name,
+                s.last_name,
+                s.student_number,
+                s.course,
+                s.year_level,
+                GROUP_CONCAT(dp.procedure_name SEPARATOR ', ') as procedures,
+                GROUP_CONCAT(dp.description SEPARATOR ' | ') as procedure_details
+              FROM visits v
+              JOIN students s ON v.student_id = s.id
+              LEFT JOIN dental_procedures dp ON v.id = dp.visit_id
+              GROUP BY v.id
+              ORDER BY v.visit_date DESC";
 
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -43,115 +41,79 @@ class DentalRecordController
         try {
             $this->db->beginTransaction();
 
-            // First, check if there's a requester entry for this student
-            $requesterQuery = "SELECT id FROM requesters WHERE student_id = :student_id LIMIT 1";
-            $requesterStmt = $this->db->prepare($requesterQuery);
-            $requesterStmt->execute([':student_id' => $data['student_id']]);
-            $requester = $requesterStmt->fetch(PDO::FETCH_ASSOC);
-
-            if (!$requester) {
-                // Create a requester entry for this student
-                $insertRequester = "INSERT INTO requesters (student_id) VALUES (:student_id)";
-                $insertStmt = $this->db->prepare($insertRequester);
-                $insertStmt->execute([':student_id' => $data['student_id']]);
-                $requester_id = $this->db->lastInsertId();
-            } else {
-                $requester_id = $requester['id'];
-            }
-
-            // Parse the visit date
-            $visit_datetime = new DateTime($data['visit_date']);
-            $slot_date = $visit_datetime->format('Y-m-d');
-            $start_time = $visit_datetime->format('H:i:s');
-            // Set end time as 1 hour after start time
-            $end_datetime = clone $visit_datetime;
-            $end_time = $end_datetime->modify('+1 hour')->format('H:i:s');
-
-            // Get provider ID (use the first provider)
-            $providerQuery = "SELECT id FROM providers LIMIT 1";
-            $providerStmt = $this->db->prepare($providerQuery);
+            // Get provider
+            $providerStmt = $this->db->prepare("SELECT id FROM providers LIMIT 1");
             $providerStmt->execute();
             $provider = $providerStmt->fetch(PDO::FETCH_ASSOC);
-            $provider_id = $provider['id'];
+            $provider_id = $provider['id'] ?? null;
 
-            // Create appointment slot
-            $slotQuery = "INSERT INTO appointment_slots 
-                         (provider_id, slot_date, start_time, end_time, max_patients) 
-                         VALUES 
-                         (:provider_id, :slot_date, :start_time, :end_time, :max_patients)";
-
-            $slotStmt = $this->db->prepare($slotQuery);
-            $slotStmt->execute([
-                ':provider_id' => $provider_id,
-                ':slot_date' => $slot_date,
-                ':start_time' => $start_time,
-                ':end_time' => $end_time,
-                ':max_patients' => 10
-            ]);
-
-            $slot_id = $this->db->lastInsertId();
-
-            // Get completed status ID
-            $statusQuery = "SELECT id FROM appointment_statuses WHERE status_name = 'completed' LIMIT 1";
-            $statusStmt = $this->db->prepare($statusQuery);
-            $statusStmt->execute();
-            $status = $statusStmt->fetch(PDO::FETCH_ASSOC);
-            $status_id = $status['id'];
-
-            // Create appointment using requester_id
-            $appointmentQuery = "INSERT INTO appointments 
-                                (requester_id, slot_id, status_id, notes) 
-                                VALUES 
-                                (:requester_id, :slot_id, :status_id, :notes)";
-
-            $appointmentStmt = $this->db->prepare($appointmentQuery);
-            $appointmentResult = $appointmentStmt->execute([
-                ':requester_id' => $requester_id,
-                ':slot_id' => $slot_id,
-                ':status_id' => $status_id,
-                ':notes' => 'Dental consultation - ' . ($data['diagnosis'] ?? 'No diagnosis')
-            ]);
-
-            if (!$appointmentResult) {
-                $error = $appointmentStmt->errorInfo();
-                throw new Exception("Failed to create appointment: " . ($error[2] ?? 'Unknown error'));
+            // Get dental service
+            $serviceStmt = $this->db->prepare("SELECT id FROM services WHERE service_name LIKE '%ental%' LIMIT 1");
+            $serviceStmt->execute();
+            $service = $serviceStmt->fetch(PDO::FETCH_ASSOC);
+            if (!$service) {
+                $serviceStmt = $this->db->prepare("SELECT id FROM services LIMIT 1");
+                $serviceStmt->execute();
+                $service = $serviceStmt->fetch(PDO::FETCH_ASSOC);
             }
+            $service_id = $service['id'] ?? null;
+
+            // Parse times
+            $visit_datetime = new DateTime($data['visit_date']);
+            $visit_date = $visit_datetime->format('Y-m-d');
+            $start_time = $visit_datetime->format('H:i:s');
+            $end_time   = (clone $visit_datetime)->modify('+1 hour')->format('H:i:s');
+
+            // Insert appointment (slot_id nullable, skip it)
+            $appointmentStmt = $this->db->prepare("
+            INSERT INTO appointments 
+                (provider_id, service_id, status_id,
+                 visit_date, start_time, end_time, max_students, notes)
+            VALUES 
+                (:provider_id, :service_id, 3,
+                 :visit_date, :start_time, :end_time, 1, :notes)
+        ");
+            $appointmentStmt->execute([
+                ':provider_id' => $provider_id,
+                ':service_id'  => $service_id,
+                ':visit_date'  => $visit_date,
+                ':start_time'  => $start_time,
+                ':end_time'    => $end_time,
+                ':notes'       => 'Dental consultation - ' . ($data['diagnosis'] ?? 'No diagnosis'),
+            ]);
 
             $appointment_id = $this->db->lastInsertId();
 
-            // Create visit linked to appointment
-            $query = "INSERT INTO visits 
-                      (appointment_id, visit_date, diagnosis, treatment) 
-                      VALUES 
-                      (:appointment_id, :visit_date, :diagnosis, :treatment)";
-
-            $stmt = $this->db->prepare($query);
-            $result = $stmt->execute([
+            // Insert visit — student_id is NOT NULL so must be included
+            $visitStmt = $this->db->prepare("
+            INSERT INTO visits 
+                (appointment_id, student_id, provider_id, visit_date, diagnosis, treatment, status)
+            VALUES 
+                (:appointment_id, :student_id, :provider_id, :visit_date, :diagnosis, :treatment, 'served')
+        ");
+            $visitStmt->execute([
                 ':appointment_id' => $appointment_id,
-                ':visit_date' => $data['visit_date'],
-                ':diagnosis' => $data['diagnosis'] ?? null,
-                ':treatment' => $data['treatment'] ?? null
+                ':student_id'     => $data['student_id'],
+                ':provider_id'    => $provider_id,
+                ':visit_date'     => $data['visit_date'],
+                ':diagnosis'      => $data['diagnosis'] ?? null,
+                ':treatment'      => $data['treatment'] ?? null,
             ]);
-
-            if (!$result) {
-                $error = $stmt->errorInfo();
-                throw new Exception("Failed to create visit record: " . ($error[2] ?? 'Unknown error'));
-            }
 
             $visit_id = $this->db->lastInsertId();
 
-            // Insert dental procedures if any
+            // Insert procedures
             if (!empty($data['procedures']) && is_array($data['procedures'])) {
-                $procQuery = "INSERT INTO dental_procedures (visit_id, procedure_name, description) 
-                              VALUES (:visit_id, :procedure_name, :description)";
-                $procStmt = $this->db->prepare($procQuery);
-
+                $procStmt = $this->db->prepare("
+                INSERT INTO dental_procedures (visit_id, procedure_name, description)
+                VALUES (:visit_id, :procedure_name, :description)
+            ");
                 foreach ($data['procedures'] as $procedure) {
                     if (!empty($procedure['name'])) {
                         $procStmt->execute([
-                            ':visit_id' => $visit_id,
+                            ':visit_id'       => $visit_id,
                             ':procedure_name' => $procedure['name'],
-                            ':description' => $procedure['description'] ?? null
+                            ':description'    => $procedure['description'] ?? null,
                         ]);
                     }
                 }
@@ -356,24 +318,22 @@ class DentalRecordController
     // Get single dental record by ID
     public function getDentalRecordById($visit_id)
     {
-        $query = "SELECT DISTINCT 
-                         v.*,
-                         s.id as student_id,
-                         s.first_name,
-                         s.last_name,
-                         s.student_number,
-                         s.course,
-                         s.year_level,
-                         GROUP_CONCAT(dp.id) as procedure_ids,
-                         GROUP_CONCAT(dp.procedure_name SEPARATOR '||') as procedure_names,
-                         GROUP_CONCAT(dp.description SEPARATOR '||') as procedure_descriptions
-                  FROM visits v
-                  JOIN appointments a ON v.appointment_id = a.id
-                  JOIN requesters r ON a.requester_id = r.id
-                  JOIN students s ON r.student_id = s.id
-                  LEFT JOIN dental_procedures dp ON v.id = dp.visit_id
-                  WHERE v.id = :visit_id
-                  GROUP BY v.id";
+        $query = "SELECT 
+                v.*,
+                s.id as student_id,
+                s.first_name,
+                s.last_name,
+                s.student_number,
+                s.course,
+                s.year_level,
+                GROUP_CONCAT(dp.id) as procedure_ids,
+                GROUP_CONCAT(dp.procedure_name SEPARATOR '||') as procedure_names,
+                GROUP_CONCAT(dp.description SEPARATOR '||') as procedure_descriptions
+              FROM visits v
+              JOIN students s ON v.student_id = s.id
+              LEFT JOIN dental_procedures dp ON v.id = dp.visit_id
+              WHERE v.id = :visit_id
+              GROUP BY v.id";
 
         $stmt = $this->db->prepare($query);
         $stmt->execute([':visit_id' => $visit_id]);

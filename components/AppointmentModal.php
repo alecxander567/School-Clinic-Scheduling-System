@@ -11,7 +11,7 @@ class AppointmentModal
         $isEdit = $editAppointment !== null;
         $modalTitle = $isEdit ? 'Edit Appointment' : 'Schedule Provider Visit';
         $submitText = $isEdit ? 'Update Visit' : 'Schedule Visit';
-        $actionUrl = $isEdit ? '../api/update-appointment.php' : 'api/create-appointment.php';
+        $actionUrl = $isEdit ? '../api/update-appointment.php' : '../api/create-appointment.php';
 
         // Get appointment data for edit mode
         $appointmentData = $isEdit ? $editAppointment : null;
