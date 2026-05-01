@@ -1,6 +1,5 @@
 <?php
-// ── Bootstrap ──────────────────────────────────────────────
-require_once __DIR__ . '/../config/database.php';        // must set $pdo
+require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../controllers/AppointmentController.php';
 require_once __DIR__ . '/../components/Sidebar.php';
 require_once __DIR__ . '/../components/AppointmentModal.php';
