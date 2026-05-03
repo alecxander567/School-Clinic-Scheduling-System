@@ -1,18 +1,21 @@
 <?php
-$host = '127.0.0.1';
-$dbname = 'scheduling_system_db';
-$username = 'root';
-$password = 'mypassWord21';
+require_once __DIR__ . '/env.php';
+Env::load();
+
+$host     = Env::get('DB_HOST');
+$dbname   = Env::get('DB_NAME');
+$username = Env::get('DB_USER');
+$password = Env::get('DB_PASS');
+$port     = Env::get('DB_PORT', '3306');
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Database Connection Failed: " . $e->getMessage());
 }
 
-// Optional: Create a Database class for other uses
 class Database
 {
     private static $instance = null;
