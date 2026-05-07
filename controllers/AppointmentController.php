@@ -426,4 +426,18 @@ class AppointmentController
             return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
         }
     }
+
+    /**
+     * Get completed appointments count
+     */
+    public function getCompletedAppointmentsCount()
+    {
+        $sql = "SELECT COUNT(*) as total 
+            FROM appointments a
+            INNER JOIN appointment_statuses st ON a.status_id = st.id
+            WHERE st.status_name IN ('Completed', 'Done', 'Finished')";
+        $stmt = $this->pdo->query($sql);
+        $result = $stmt->fetch();
+        return $result['total'] ?? 0;
+    }
 }

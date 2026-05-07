@@ -33,29 +33,29 @@ class Sidebar
 
                 <!-- Brand -->
                 <div class="flex items-center gap-2 mb-4">
-                    <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style="background:#2d8a6e;">
+                    <div class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style="background:#1E5BA8;">
                         <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
                     </div>
-                    <span class="text-sm font-semibold" style="color:#e1f5ee;">Clinic Scheduler</span>
+                    <span class="text-sm font-semibold" style="color:#E8F1F8;">Clinic Scheduler</span>
                 </div>
 
                 <!-- User chip -->
-                <div class="flex items-center gap-2 px-2.5 py-2 rounded-lg" style="background:rgba(45,138,110,0.15); border:1px solid rgba(45,138,110,0.25);">
+                <div class="flex items-center gap-2 px-2.5 py-2 rounded-lg" style="background:rgba(30, 91, 168, 0.15); border:1px solid rgba(30, 91, 168, 0.25);">
                     <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0"
-                        style="background:#2d8a6e; color:#e1f5ee;">
+                        style="background:#1E5BA8; color:#E8F1F8;">
                         <?php echo htmlspecialchars($initials); ?>
                     </div>
                     <div class="min-w-0">
-                        <p class="text-xs font-medium truncate" style="color:#c8e8de;"><?php echo htmlspecialchars($this->userName); ?></p>
-                        <p class="text-xs" style="color:#7aaa96;"><?php echo ucfirst($this->userRole); ?></p>
+                        <p class="text-xs font-medium truncate" style="color:#BED6E8;"><?php echo htmlspecialchars($this->userName); ?></p>
+                        <p class="text-xs" style="color:#6B8FA7;"><?php echo ucfirst($this->userRole); ?></p>
                     </div>
                 </div>
             </div>
 
             <!-- Navigation -->
-            <nav class="flex-1 overflow-y-auto py-3 px-2.5" style="scrollbar-width:thin; scrollbar-color:#4a7a65 transparent;">
+            <nav class="flex-1 overflow-y-auto py-3 px-2.5" style="scrollbar-width:thin; scrollbar-color:#4A7A9A transparent;">
                 <?php echo $this->getMenuItems(); ?>
             </nav>
 
@@ -88,7 +88,7 @@ class Sidebar
 
             $section = $item['section'] ?? null;
             if ($section && $section !== $lastSection) {
-                $html .= '<p class="text-xs font-medium uppercase tracking-widest px-2 mt-4 mb-1" style="color:#4a7a65; font-size:9px; letter-spacing:0.08em;">'
+                $html .= '<p class="text-xs font-medium uppercase tracking-widest px-2 mt-4 mb-1" style="color:#4A7A9A; font-size:9px; letter-spacing:0.08em;">'
                     . htmlspecialchars($section) . '</p>';
                 $lastSection = $section;
             }
@@ -189,10 +189,10 @@ class Sidebar
         $itemId     = 'menu-' . $key;
 
         $baseStyle     = 'display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;width:100%;transition:background 0.15s;text-decoration:none;';
-        $activeStyle   = 'background:#2d8a6e;';
+        $activeStyle   = 'background:#1E5BA8;';
         $inactiveStyle = 'background:transparent;';
-        $hoverOn  = "this.style.background='" . ($active ? '#2d8a6e' : 'rgba(255,255,255,0.07)') . "'";
-        $hoverOff = "this.style.background='" . ($active ? '#2d8a6e' : 'transparent') . "'";
+        $hoverOn  = "this.style.background='" . ($active ? '#1E5BA8' : 'rgba(255,255,255,0.07)') . "'";
+        $hoverOff = "this.style.background='" . ($active ? '#1E5BA8' : 'transparent') . "'";
 
         $html = '<div class="mb-0.5">';
 
@@ -206,16 +206,16 @@ class Sidebar
                 . 'onmouseover="' . $hoverOn . '" onmouseout="' . $hoverOff . '">';
         }
 
-        $iconColor = $active ? '#e1f5ee' : '#7aaa96';
+        $iconColor = $active ? '#E8F1F8' : '#6B8FA7';
         $html .= '<svg style="width:14px;height:14px;flex-shrink:0;color:' . $iconColor . ';" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">';
         $html .= '<path stroke-linecap="round" stroke-linejoin="round" d="' . $item['icon'] . '"/>';
         $html .= '</svg>';
 
-        $labelColor = $active ? '#e1f5ee' : '#9ab5aa';
+        $labelColor = $active ? '#E8F1F8' : '#8FA6BA';
         $html .= '<span style="font-size:12px;flex:1;text-align:left;color:' . $labelColor . ';">' . htmlspecialchars($item['label']) . '</span>';
 
         if ($hasSubmenu) {
-            $html .= '<svg id="arrow-' . $itemId . '" style="width:12px;height:12px;color:#4a7a65;transition:transform 0.2s;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">';
+            $html .= '<svg id="arrow-' . $itemId . '" style="width:12px;height:12px;color:#4A7A9A;transition:transform 0.2s;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">';
             $html .= '<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>';
             $html .= '</svg>';
         }
@@ -227,15 +227,15 @@ class Sidebar
             foreach ($item['submenu'] as $subitem) {
                 if (!$this->hasAccess($subitem)) continue;
                 $subActive   = ($this->activeMenu === $subitem['label'] || $this->activeMenu === $subitem['link']);
-                $subBg       = $subActive ? '#2d8a6e' : 'transparent';
-                $subHoverOn  = "this.style.background='" . ($subActive ? '#2d8a6e' : 'rgba(255,255,255,0.06)') . "'";
+                $subBg       = $subActive ? '#1E5BA8' : 'transparent';
+                $subHoverOn  = "this.style.background='" . ($subActive ? '#1E5BA8' : 'rgba(255,255,255,0.06)') . "'";
                 $subHoverOff = "this.style.background='" . $subBg . "'";
                 $html .= '<li class="mb-0.5">';
                 $html .= '<a href="' . htmlspecialchars($this->url($subitem['link'])) . '" '
                     . 'style="display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:6px;text-decoration:none;background:' . $subBg . ';" '
                     . 'onmouseover="' . $subHoverOn . '" onmouseout="' . $subHoverOff . '">';
-                $subIconColor  = $subActive ? '#e1f5ee' : '#4a7a65';
-                $subLabelColor = $subActive ? '#e1f5ee' : '#7aaa96';
+                $subIconColor  = $subActive ? '#E8F1F8' : '#4A7A9A';
+                $subLabelColor = $subActive ? '#E8F1F8' : '#6B8FA7';
                 $html .= '<svg style="width:12px;height:12px;flex-shrink:0;color:' . $subIconColor . ';" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">';
                 $html .= '<path stroke-linecap="round" stroke-linejoin="round" d="' . $subitem['icon'] . '"/>';
                 $html .= '</svg>';

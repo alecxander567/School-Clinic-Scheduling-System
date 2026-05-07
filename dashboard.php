@@ -32,6 +32,7 @@ $pendingConsultations = $appointmentController->getPendingConsultationsCount();
 
 // Get today's appointments
 $todayAppointments = $appointmentController->getAppointmentsByDate(date('Y-m-d'));
+$completedAppointments = $appointmentController->getCompletedAppointmentsCount();
 
 $sidebar = new Sidebar($currentPage, $userRole, $userName);
 ?>
@@ -222,18 +223,21 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
                     <p class="stat-card-label text-xs mt-0.5">Pending Consultations</p>
                 </div>
 
-                <!-- Low Stock Items Card (placeholder - implement when inventory is ready) -->
+                <!-- Completed Appointments Card -->
                 <div class="stat-card fade-in d4 rounded-xl p-4">
                     <div class="flex items-center justify-between mb-3">
                         <div class="stat-icon stat-icon--red w-8 h-8 rounded-lg">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
-                        <span class="stat-badge stat-badge--red text-xs px-2 py-0.5 rounded-full">Info</span>
+                        <span class="stat-badge stat-badge--red text-xs px-2 py-0.5 rounded-full">
+                            <?php echo $completedAppointments > 0 ? 'Done' : 'None'; ?>
+                        </span>
                     </div>
-                    <p class="stat-card-number text-2xl font-semibold">0</p>
-                    <p class="stat-card-label text-xs mt-0.5">Low Stock Items</p>
+                    <p class="stat-card-number text-2xl font-semibold"><?php echo $completedAppointments; ?></p>
+                    <p class="stat-card-label text-xs mt-0.5">Completed Appointments</p>
                 </div>
 
             </div>
@@ -261,12 +265,12 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
                                     } elseif (str_contains($statusLower, 'done') || str_contains($statusLower, 'complet')) {
                                         $badgeStyle = 'background:#f1efe8;color:#5f5e5a;';
                                     } else {
-                                        $badgeStyle = 'background:#e1f5ee;color:#0f6e56;';
+                                        $badgeStyle = 'background:#E8F1F8;color:#004B87;';
                                     }
-                                    $dotColor = str_contains($statusLower, 'done') ? '#b4b2a9' : '#2d8a6e';
-                                    $barColor = str_contains($statusLower, 'done') ? '#b4b2a9' : '#2d8a6e';
+                                    $dotColor = str_contains($statusLower, 'done') ? '#b4b2a9' : '#1E5BA8';
+                                    $barColor = str_contains($statusLower, 'done') ? '#b4b2a9' : '#1E5BA8';
                                 ?>
-                                    <div style="display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:10px;border:0.5px solid #ddeee7;background:#f9fcfa;">
+                                    <div style="display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:10px;border:0.5px solid #D4E6F1;background:#F8FAFD;">
                                         <!-- Status dot -->
                                         <div style="width:7px;height:7px;border-radius:50%;background:<?php echo $dotColor ?>;flex-shrink:0;margin-top:14px;"></div>
 
@@ -275,8 +279,8 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
                                             <span style="font-size:12px;font-weight:500;color:#1a2e25;">
                                                 <?php echo date('g:i A', strtotime($apt['start_time'])); ?>
                                             </span>
-                                            <div style="width:1.5px;height:18px;background:#c0ddd5;margin:3px 0;border-radius:2px;"></div>
-                                            <span style="font-size:11px;color:#7aaa96;">
+                                            <div style="width:1.5px;height:18px;background:#B8D4E8;margin:3px 0;border-radius:2px;"></div>
+                                            <span style="font-size:11px;color:#6B8FA7;">
                                                 <?php echo date('g:i', strtotime($apt['end_time'])); ?>
                                             </span>
                                         </div>
@@ -292,19 +296,19 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
                                                 </span>
                                             </div>
                                             <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                                                <span style="font-size:11px;color:#7aaa96;">
+                                                <span style="font-size:11px;color:#6B8FA7;">
                                                     <?php echo htmlspecialchars($apt['provider_name'] ?? 'N/A'); ?>
                                                 </span>
-                                                <span style="font-size:11px;color:#7aaa96;">
+                                                <span style="font-size:11px;color:#6B8FA7;">
                                                     <?php echo $filled; ?> / <?php echo $max; ?> students
                                                 </span>
                                             </div>
                                             <!-- Capacity bar -->
-                                            <div style="height:3px;border-radius:2px;background:#ddeee7;margin-top:6px;overflow:hidden;">
+                                            <div style="height:3px;border-radius:2px;background:#D4E6F1;margin-top:6px;overflow:hidden;">
                                                 <div style="height:100%;border-radius:2px;background:<?php echo $barColor ?>;width:<?php echo $pct ?>%;"></div>
                                             </div>
                                             <?php if ($apt['notes']): ?>
-                                                <p style="font-size:11px;color:#9ab5aa;margin-top:6px;padding-top:6px;border-top:0.5px solid #ddeee7;">
+                                                <p style="font-size:11px;color:#8FA6BA;margin-top:6px;padding-top:6px;border-top:0.5px solid #D4E6F1;">
                                                     📝 <?php echo htmlspecialchars(substr($apt['notes'], 0, 100)); ?>
                                                 </p>
                                             <?php endif; ?>
@@ -337,13 +341,13 @@ $sidebar = new Sidebar($currentPage, $userRole, $userName);
                                 </svg>
                                 <span class="text-xs font-medium">Add Student</span>
                             </a>
-                            <a href="medical/visits.php" class="qa-tile qa-tile--amber flex items-center gap-2 p-3 rounded-lg h-full">
+                            <a href="appointments/calendar.php" class="qa-tile qa-tile--amber flex items-center gap-2 p-3 rounded-lg h-full">
                                 <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
                                 <span class="text-xs font-medium">Visit History</span>
                             </a>
-                            <a href="reports/daily.php" class="qa-tile qa-tile--gray  flex items-center gap-2 p-3 rounded-lg h-full">
+                            <a href="reports/reports.php" class="qa-tile qa-tile--gray  flex items-center gap-2 p-3 rounded-lg h-full">
                                 <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                 </svg>

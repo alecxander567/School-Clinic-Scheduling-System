@@ -81,25 +81,23 @@ $courses = [
     <!-- Main content -->
     <div id="mainContent" class="lg:ml-56 transition-all duration-300">
 
-        <header class="topbar sticky top-0 z-20" style="background:white; border-bottom:1px solid #edf2f0;">
+        <header class="topbar sticky top-0 z-20">
             <div class="pl-14 pr-5 lg:px-6 py-3 flex items-center justify-between">
                 <div>
-                    <h1 class="topbar-title text-lg font-semibold" style="color:#1a2e25;">Add New Student</h1>
-                    <p class="topbar-subtitle text-xs" style="color:#627a6e;">Register a student to the clinic system</p>
+                    <h1 class="topbar-title text-lg font-semibold">Add New Student</h1>
+                    <p class="topbar-subtitle text-xs">Register a student to the clinic system</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <span class="topbar-date hidden sm:block text-xs px-3 py-1.5 rounded-lg"
-                        style="background:#f4f8f5; color:#2c5a48;">
+                    <span class="topbar-date hidden sm:block text-xs px-3 py-1.5 rounded-lg">
                         <?php echo date('D, M j Y'); ?>
                     </span>
                     <div class="hidden sm:flex items-center gap-2">
-                        <div class="topbar-avatar w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold"
-                            style="background:#2d8a6e; color:white;">
+                        <div class="topbar-avatar w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold">
                             <?php echo strtoupper(substr($userName, 0, 2)); ?>
                         </div>
                         <div class="hidden md:block text-right">
-                            <p class="topbar-user-name text-xs font-medium" style="color:#1a2e25;"><?php echo htmlspecialchars($userName); ?></p>
-                            <p class="topbar-user-email text-xs" style="color:#7a9b8a;"><?php echo htmlspecialchars($user['email'] ?? ''); ?></p>
+                            <p class="topbar-user-name text-xs font-medium"><?php echo htmlspecialchars($userName); ?></p>
+                            <p class="topbar-user-email text-xs"><?php echo htmlspecialchars($user['email'] ?? ''); ?></p>
                         </div>
                     </div>
                 </div>

@@ -7,31 +7,45 @@
 }
 
 :root {
-  --green-dark: #1a2e25;
-  --green-deep: #2d8a6e;
-  --green-mid: #3aa882;
-  --green-light: #eaf5f0;
-  --green-border: #c4e5d9;
-  --green-muted: #7a9b8a;
-  --green-hint: #9ab8ab;
-  --text-dark: #1a2e25;
-  --text-body: #2c4b3e;
-  --text-muted: #627a6e;
-  --bg: #f0f7f3;
-  --white: #ffffff;
+  --color-bg: #e8f1f8;
+  --color-surface: #ffffff;
+  --color-border: #d4e6f1;
+
+  --color-primary: #1e5ba8;
+  --color-primary-dark: #004b87;
+  --color-primary-deep: #1a2e25;
+
+  --color-text-main: #1a2e25;
+  --color-text-muted: #6b8fa7;
+  --color-text-soft: #8fa6ba;
+  --color-text-mid: #4a7a9a;
+
+  --tint-teal: #e8f1f8;
+  --tint-blue: #e6f1fb;
+  --tint-amber: #faeeda;
+  --tint-red: #fcebeb;
+
+  --accent-blue: #1e5ba8;
+  --accent-amber: #ba7517;
+  --accent-red: #a32d2d;
+
+  --border-teal: #bed6e8;
+  --border-blue: #b5d4f4;
+  --border-amber: #fac775;
+
   --shadow-card:
-    0 8px 32px rgba(26, 46, 37, 0.1), 0 1.5px 4px rgba(26, 46, 37, 0.06);
+    0 8px 32px rgba(30, 91, 168, 0.1), 0 1.5px 4px rgba(30, 91, 168, 0.06);
 }
 
 body {
   font-family: "DM Sans", system-ui, sans-serif;
-  background: var(--bg);
+  background: var(--color-bg);
   min-height: 100vh;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   padding: 2rem 1rem 3rem;
-  color: var(--text-body);
+  color: var(--color-text-main);
 }
 
 body::before {
@@ -39,7 +53,7 @@ body::before {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background-image: radial-gradient(circle, #b8d8ca 1px, transparent 1px);
+  background-image: radial-gradient(circle, #bed6e8 1px, transparent 1px);
   background-size: 28px 28px;
   opacity: 0.35;
   pointer-events: none;
@@ -54,8 +68,9 @@ body::before {
 
 /* ── Card ── */
 .card {
-  background: var(--white);
+  background: var(--color-surface);
   border-radius: 1.25rem;
+  border: 1px solid var(--color-border);
   box-shadow: var(--shadow-card);
   overflow: hidden;
   animation: cardIn 0.45s cubic-bezier(0.34, 1.4, 0.64, 1);
@@ -74,7 +89,7 @@ body::before {
 
 /* ── Header band ── */
 .card-header {
-  background: linear-gradient(135deg, var(--green-dark) 0%, #236b56 100%);
+  background: var(--color-primary);
   padding: 2rem 2rem 1.75rem;
   position: relative;
   overflow: hidden;
@@ -99,7 +114,7 @@ body::before {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: rgba(58, 168, 130, 0.15);
+  background: rgba(184, 212, 232, 0.15);
 }
 
 .header-icon {
@@ -139,8 +154,8 @@ body::before {
 
 /* ── Appointment strip ── */
 .apt-strip {
-  background: var(--green-light);
-  border: 1px solid var(--green-border);
+  background: var(--tint-teal);
+  border: 1px solid var(--color-border);
   border-radius: 0.875rem;
   padding: 1rem 1.125rem;
 }
@@ -150,7 +165,7 @@ body::before {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--green-deep);
+  color: var(--color-primary);
   margin-bottom: 0.625rem;
   display: flex;
   align-items: center;
@@ -174,37 +189,37 @@ body::before {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--green-muted);
+  color: var(--color-text-muted);
 }
 
 .apt-item-val {
   font-size: 0.82rem;
   font-weight: 500;
-  color: var(--text-dark);
+  color: var(--color-text-main);
 }
 
 .slot-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  background: #d1f0e4;
-  border: 1px solid #a0d9bf;
+  background: var(--tint-blue);
+  border: 1px solid var(--border-blue);
   border-radius: 9999px;
   padding: 0.1rem 0.55rem;
   font-size: 0.72rem;
   font-weight: 700;
-  color: #1a6645;
+  color: var(--color-primary-dark);
 }
 
 /* ── Error ── */
 .error-box {
-  background: #fef2f2;
+  background: var(--tint-red);
   border: 1px solid #fecaca;
   border-left: 3px solid #ef4444;
   border-radius: 0.625rem;
   padding: 0.75rem 1rem;
   font-size: 0.82rem;
-  color: #991b1b;
+  color: var(--accent-red);
 }
 
 /* ── Section label ── */
@@ -213,7 +228,7 @@ body::before {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--green-deep);
+  color: var(--color-primary);
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -224,7 +239,7 @@ body::before {
   content: "";
   flex: 1;
   height: 1px;
-  background: linear-gradient(to right, var(--green-border), transparent);
+  background: linear-gradient(to right, var(--color-border), transparent);
 }
 
 /* ── Field grid ── */
@@ -255,14 +270,13 @@ label {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: var(--text-dark);
+  color: var(--color-text-main);
 }
 
 .req {
-  color: #c0504d;
+  color: var(--accent-red);
 }
 
-/* ── THE FIX: include all input types ── */
 input[type="text"],
 input[type="email"],
 input[type="tel"],
@@ -271,12 +285,12 @@ select,
 textarea {
   width: 100%;
   padding: 0.575rem 0.75rem;
-  border: 1.5px solid #daeee5;
+  border: 1.5px solid var(--color-border);
   border-radius: 0.6rem;
   font-size: 0.83rem;
   font-family: "DM Sans", system-ui, sans-serif;
-  color: var(--text-dark);
-  background: #f9fbf9;
+  color: var(--color-text-main);
+  background: var(--tint-teal);
   transition:
     border-color 0.18s,
     box-shadow 0.18s,
@@ -290,9 +304,9 @@ input[type="tel"]:focus,
 input[type="number"]:focus,
 select:focus,
 textarea:focus {
-  border-color: var(--green-deep);
+  border-color: var(--color-primary);
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(45, 138, 110, 0.12);
+  box-shadow: 0 0 0 3px rgba(30, 91, 168, 0.12);
 }
 
 input[type="text"]::placeholder,
@@ -300,7 +314,7 @@ input[type="email"]::placeholder,
 input[type="tel"]::placeholder,
 input[type="number"]::placeholder,
 textarea::placeholder {
-  color: #afc5bb;
+  color: var(--color-text-soft);
 }
 
 select {
@@ -323,7 +337,7 @@ select {
   height: 0;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-top: 5px solid var(--green-muted);
+  border-top: 5px solid var(--color-text-muted);
   pointer-events: none;
 }
 
@@ -337,7 +351,7 @@ textarea {
 .field-hint {
   display: block;
   font-size: 0.7rem;
-  color: var(--green-hint);
+  color: var(--color-text-soft);
   margin-top: 2px;
   line-height: 1.4;
 }
@@ -348,8 +362,8 @@ textarea {
   background: linear-gradient(
     to right,
     transparent,
-    var(--green-border) 20%,
-    var(--green-border) 80%,
+    var(--color-border) 20%,
+    var(--color-border) 80%,
     transparent
   );
 }
@@ -358,7 +372,7 @@ textarea {
 .btn-submit {
   width: 100%;
   padding: 0.75rem 1rem;
-  background: var(--green-deep);
+  background: var(--color-primary);
   color: #fff;
   font-family: "DM Sans", system-ui, sans-serif;
   font-size: 0.88rem;
@@ -377,9 +391,9 @@ textarea {
 }
 
 .btn-submit:hover {
-  background: #236b56;
+  background: var(--color-primary-dark);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(45, 138, 110, 0.35);
+  box-shadow: 0 6px 20px rgba(30, 91, 168, 0.35);
 }
 
 .btn-submit:active {
@@ -389,7 +403,7 @@ textarea {
 
 /* ── Success state ── */
 .success-header {
-  background: linear-gradient(135deg, #166534 0%, var(--green-deep) 100%);
+  background: var(--color-primary);
   padding: 2.5rem 2rem;
   text-align: center;
   position: relative;
@@ -402,7 +416,7 @@ textarea {
   inset: 0;
   background: radial-gradient(
     circle at 70% 30%,
-    rgba(58, 168, 130, 0.3) 0%,
+    rgba(184, 212, 232, 0.25) 0%,
     transparent 60%
   );
 }
@@ -457,8 +471,8 @@ textarea {
 }
 
 .priority-tile {
-  background: var(--green-light);
-  border: 1px solid var(--green-border);
+  background: var(--tint-teal);
+  border: 1px solid var(--color-border);
   border-radius: 1rem;
   padding: 1.5rem;
   display: flex;
@@ -471,14 +485,14 @@ textarea {
   width: 4.5rem;
   height: 4.5rem;
   border-radius: 1rem;
-  background: var(--green-deep);
+  background: var(--color-primary);
   color: #fff;
   font-size: 2rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(45, 138, 110, 0.35);
+  box-shadow: 0 4px 16px rgba(30, 91, 168, 0.35);
   animation: popIn 0.5s cubic-bezier(0.34, 1.8, 0.64, 1) 0.25s both;
 }
 
@@ -487,39 +501,39 @@ textarea {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--green-muted);
+  color: var(--color-text-muted);
   margin-bottom: 0.2rem;
 }
 
 .priority-text-val {
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--text-dark);
+  color: var(--color-text-main);
 }
 
 .priority-text-sub {
   font-size: 0.75rem;
-  color: var(--green-muted);
+  color: var(--color-text-muted);
   margin-top: 0.1rem;
 }
 
 .info-notice {
-  background: #fffbeb;
-  border: 1px solid #fde68a;
+  background: var(--tint-amber);
+  border: 1px solid var(--border-amber);
   border-left: 3px solid #f59e0b;
   border-radius: 0.625rem;
   padding: 0.75rem 1rem;
   font-size: 0.8rem;
-  color: #92400e;
+  color: var(--accent-amber);
   line-height: 1.6;
 }
 
 .btn-print {
   width: 100%;
   padding: 0.7rem 1rem;
-  background: #f3f9f6;
-  color: var(--green-deep);
-  border: 1.5px solid var(--green-border);
+  background: var(--tint-teal);
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-border);
   font-family: "DM Sans", system-ui, sans-serif;
   font-size: 0.85rem;
   font-weight: 600;
@@ -535,8 +549,8 @@ textarea {
 }
 
 .btn-print:hover {
-  background: #e0f0e8;
-  border-color: var(--green-deep);
+  background: var(--tint-blue);
+  border-color: var(--color-primary);
 }
 
 /* ── Footer note ── */
@@ -544,5 +558,5 @@ textarea {
   text-align: center;
   margin-top: 1.25rem;
   font-size: 0.7rem;
-  color: var(--green-muted);
+  color: var(--color-text-muted);
 }

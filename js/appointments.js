@@ -106,7 +106,7 @@ function showQRModal(qrUrl, priorityCount, appointmentId) {
     style.textContent = `
       .qr-backdrop {
         position: fixed; inset: 0;
-        background: rgba(15,23,18,0.55);
+        background: rgba(15, 32, 68, 0.5);
         backdrop-filter: blur(3px);
         -webkit-backdrop-filter: blur(3px);
         z-index: 1000;
@@ -122,7 +122,7 @@ function showQRModal(qrUrl, priorityCount, appointmentId) {
       .qr-modal {
         background: #ffffff;
         border-radius: 1rem;
-        box-shadow: 0 24px 64px rgba(0,0,0,0.14), 0 4px 16px rgba(0,0,0,0.08), 0 0 0 1px rgba(45,138,110,0.08);
+        box-shadow: 0 24px 64px rgba(15,32,68,0.14), 0 4px 16px rgba(15,32,68,0.08), 0 0 0 1px rgba(30,91,168,0.08);
         width: 100%; max-width: 26rem;
         max-height: 90vh; overflow-y: auto;
         display: flex; flex-direction: column;
@@ -131,65 +131,103 @@ function showQRModal(qrUrl, priorityCount, appointmentId) {
         scrollbar-width: none;
         -ms-overflow-style: none;
       }
-      .qr-modal::-webkit-scrollbar {
-        display: none;
-      }
+      .qr-modal::-webkit-scrollbar { display: none; }
+
       .qr-modal-header {
         display: flex; align-items: flex-start; gap: 0.75rem;
         padding: 1.25rem 1.5rem;
       }
       .qr-modal-header-icon {
         flex-shrink: 0; width: 2.25rem; height: 2.25rem;
-        border-radius: 0.6rem; background: #eaf5f0; border: 1px solid #c4e5d9;
-        display: flex; align-items: center; justify-content: center; color: #2d8a6e;
+        border-radius: 0.6rem;
+        background: #e8f1f8;
+        border: 1px solid #bed6e8;
+        display: flex; align-items: center; justify-content: center;
+        color: #1e5ba8;
       }
-      .qr-modal-title { font-size: 0.95rem; font-weight: 600; color: #1a2e25; margin: 0; line-height: 1.3; }
-      .qr-modal-subtitle { font-size: 0.72rem; color: #7a9b8a; margin: 0.15rem 0 0; }
+      .qr-modal-title {
+        font-size: 0.95rem; font-weight: 600;
+        color: #0f2044;
+        margin: 0; line-height: 1.3;
+      }
+      .qr-modal-subtitle {
+        font-size: 0.72rem;
+        color: #6b8fa7;
+        margin: 0.15rem 0 0;
+      }
       .qr-modal-close {
         flex-shrink: 0; margin-left: auto; width: 2rem; height: 2rem;
-        border-radius: 0.4rem; border: 1px solid #e4ede7; background: #f6faf7; color: #627a6e;
-        display: flex; align-items: center; justify-content: center; cursor: pointer;
+        border-radius: 0.4rem;
+        border: 1px solid #d4e6f1;
+        background: #e8f1f8;
+        color: #6b8fa7;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer;
         transition: background 0.15s, color 0.15s, border-color 0.15s;
       }
-      .qr-modal-close:hover { background: #fce8e8; border-color: #f0b8b8; color: #c0504d; }
+      .qr-modal-close:hover {
+        background: #fcebeb;
+        border-color: #fecaca;
+        color: #be123c;
+      }
       .qr-divider {
         height: 1px;
-        background: linear-gradient(to right, transparent, #e4ede7 20%, #e4ede7 80%, transparent);
+        background: linear-gradient(to right, transparent, #d4e6f1 20%, #d4e6f1 80%, transparent);
         flex-shrink: 0;
       }
-      .qr-modal-body { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+      .qr-modal-body {
+        padding: 1.25rem 1.5rem;
+        display: flex; flex-direction: column; gap: 1rem;
+      }
       .qr-code-wrap {
         display: flex; justify-content: center; align-items: center;
-        background: #f3f9f6; border: 1px solid #daeee5;
+        background: #e8f1f8;
+        border: 1px solid #bed6e8;
         border-radius: 0.75rem; padding: 1.25rem;
         min-height: 220px;
       }
       .qr-url-box {
-        background: #f3f9f6; border: 1px solid #daeee5;
+        background: #e8f1f8;
+        border: 1px solid #bed6e8;
         border-radius: 0.75rem; padding: 0.75rem 1rem;
       }
       .qr-url-label {
         font-size: 0.67rem; font-weight: 700; text-transform: uppercase;
-        letter-spacing: 0.07em; color: #2d8a6e; margin: 0 0 0.35rem;
+        letter-spacing: 0.07em;
+        color: #1e5ba8;
+        margin: 0 0 0.35rem;
         display: flex; align-items: center; gap: 0.3rem;
       }
       .qr-url-text {
-        font-size: 0.72rem; color: #2c4b3e; word-break: break-all;
-        font-family: monospace; line-height: 1.5;
+        font-size: 0.72rem;
+        color: #0f2044;
+        word-break: break-all;
+        font-family: 'JetBrains Mono', monospace; line-height: 1.5;
       }
       .qr-queue-strip {
         display: flex; align-items: center; gap: 0.875rem;
-        background: #f3f9f6; border: 1px solid #daeee5;
+        background: #e8f1f8;
+        border: 1px solid #bed6e8;
         border-radius: 0.75rem; padding: 0.75rem 1rem;
       }
       .qr-priority-badge {
         flex-shrink: 0; width: 2.75rem; height: 2.75rem; border-radius: 0.75rem;
-        background: #2d8a6e; color: #fff;
+        background: #1e5ba8;
+        color: #fff;
         font-size: 1rem; font-weight: 700;
         display: flex; align-items: center; justify-content: center;
       }
-      .qr-queue-label { font-size: 0.67rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #2d8a6e; margin: 0 0 0.2rem; }
-      .qr-queue-value { font-size: 0.82rem; color: #2c4b3e; margin: 0; }
+      .qr-queue-label {
+        font-size: 0.67rem; font-weight: 700; text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: #1e5ba8;
+        margin: 0 0 0.2rem;
+      }
+      .qr-queue-value {
+        font-size: 0.82rem;
+        color: #0f2044;
+        margin: 0;
+      }
       .qr-modal-footer {
         padding: 1rem 1.5rem;
         display: flex; gap: 0.5rem;
@@ -197,18 +235,45 @@ function showQRModal(qrUrl, priorityCount, appointmentId) {
       .qr-btn {
         flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem;
         padding: 0.5rem 0.75rem; border-radius: 0.55rem;
-        font-size: 0.78rem; font-weight: 600; font-family: 'DM Sans', system-ui, sans-serif;
-        cursor: pointer; transition: all 0.18s ease; border: 1.5px solid transparent; white-space: nowrap;
+        font-size: 0.78rem; font-weight: 600;
+        font-family: 'DM Sans', system-ui, sans-serif;
+        cursor: pointer; transition: all 0.18s ease;
+        border: 1.5px solid transparent; white-space: nowrap;
       }
-      .qr-btn-primary { background: #2d8a6e; color: #fff; border-color: #2d8a6e; }
-      .qr-btn-primary:hover { background: #236b56; border-color: #236b56; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(45,138,110,0.3); }
-      .qr-btn-secondary { background: #f0f7f3; color: #2d6b52; border-color: #c8dfd4; }
-      .qr-btn-secondary:hover { background: #e0f0e8; border-color: #2d8a6e; }
-      .qr-btn-ghost { background: #f4f8f5; color: #456b5b; border-color: #d4e6dd; }
-      .qr-btn-ghost:hover { background: #e8f2ec; border-color: #b8d8ca; }
+      .qr-btn-primary {
+        background: #1e5ba8;
+        color: #fff;
+        border-color: #1e5ba8;
+      }
+      .qr-btn-primary:hover {
+        background: #004b87;
+        border-color: #004b87;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 14px rgba(30,91,168,0.35);
+      }
+      .qr-btn-secondary {
+        background: #e8f1f8;
+        color: #1e5ba8;
+        border-color: #bed6e8;
+      }
+      .qr-btn-secondary:hover {
+        background: #d4e6f1;
+        border-color: #1e5ba8;
+      }
+      .qr-btn-ghost {
+        background: #eef4fd;
+        color: #374151;
+        border-color: #d4e6f1;
+      }
+      .qr-btn-ghost:hover {
+        background: #e8f1f8;
+        border-color: #bed6e8;
+      }
       .qr-tip {
         text-align: center;
-        font-size: 0.68rem; color: #9ab8ab; padding: 0 1.5rem 1rem;
+        font-size: 0.68rem;
+        color: #8fa6ba;
+        padding: 0 1.5rem 1rem;
       }
     `;
     document.head.appendChild(style);
@@ -241,7 +306,7 @@ function showQRModal(qrUrl, priorityCount, appointmentId) {
         <div class="qr-modal-body">
 
           <div class="qr-code-wrap" id="qrCodeContainer">
-            <div style="color:#9ab8ab;font-size:0.8rem">Generating QR code…</div>
+            <div style="color:#8fa6ba;font-size:0.8rem">Generating QR code…</div>
           </div>
 
           <div class="qr-url-box">
@@ -299,12 +364,12 @@ function showQRModal(qrUrl, priorityCount, appointmentId) {
       text: qrUrl,
       width: 180,
       height: 180,
-      colorDark: "#1a2e25",
-      colorLight: "#f3f9f6",
+      colorDark: "#0f2044",
+      colorLight: "#e8f1f8",
     });
   } else {
     document.getElementById("qrCodeContainer").innerHTML =
-      `<p style="color:#c0504d;font-size:0.8rem">QR library not loaded.<br><span style="color:#9ab8ab">${qrUrl}</span></p>`;
+      `<p style="color:#be123c;font-size:0.8rem">QR library not loaded.<br><span style="color:#8fa6ba">${qrUrl}</span></p>`;
   }
 }
 
@@ -358,7 +423,7 @@ function printQR() {
         <style>
           body { margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; font-family: 'DM Sans', system-ui, sans-serif; }
           img { width: 220px; height: 220px; }
-          p { font-size: 11px; color: #2c4b3e; margin-top: 10px; word-break: break-all; text-align: center; max-width: 260px; }
+          p { font-size: 11px; color: #0f2044; margin-top: 10px; word-break: break-all; text-align: center; max-width: 260px; }
         </style>
       </head>
       <body>

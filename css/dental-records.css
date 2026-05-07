@@ -1,16 +1,39 @@
-/* ── CSS Variables (matching health-record.css) ───────────── */
+/* ── CSS Variables ── */
 :root {
-  --color-primary: #2d8a6e;
-  --color-primary-dark: #236b56;
+  --color-primary: #1e5ba8;
+  --color-primary-dark: #004b87;
+  --color-primary-deep: #0f2044;
   --color-surface: #ffffff;
-  --color-border: #e5ede9;
-  --color-text-main: #1a2e25;
-  --color-text-muted: #7aaa96;
-  --tint-teal: rgba(45, 138, 110, 0.08);
-  --tint-red: rgba(192, 80, 77, 0.08);
+  --color-border: #d4e6f1;
+  --color-border-light: #eef4fd;
+  --color-bg: #e8f1f8;
+
+  --color-text-main: #0f2044;
+  --color-text-muted: #6b8fa7;
+  --color-text-soft: #8fa6ba;
+  --color-text-mid: #4a7a9a;
+
+  --tint-blue: #e8f1f8;
+  --tint-indigo: #e6eeff;
+  --tint-amber: #faeeda;
+  --tint-red: #fcebeb;
+
+  --border-blue: #bed6e8;
+  --border-indigo: #c7d2fe;
+
+  --shadow-sm:
+    0 1px 3px rgba(15, 32, 68, 0.07), 0 1px 2px rgba(15, 32, 68, 0.05);
+  --shadow-md:
+    0 4px 16px rgba(15, 32, 68, 0.1), 0 2px 6px rgba(15, 32, 68, 0.06);
+  --shadow-lg:
+    0 10px 32px rgba(15, 32, 68, 0.14), 0 4px 10px rgba(15, 32, 68, 0.08);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
 }
 
-/* ── Reset / base ─────────────────────────────────────────── */
+/* ── Reset / base ── */
 *,
 *::before,
 *::after {
@@ -20,11 +43,11 @@
 body {
   margin: 0;
   font-family: "DM Sans", sans-serif;
-  background: #f4f6f4;
+  background: var(--color-bg);
   color: var(--color-text-main);
 }
 
-/* ── Fade-in animation (matches health-record.css) ────────── */
+/* ── Fade-in animation ── */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -35,7 +58,6 @@ body {
     transform: translateY(0);
   }
 }
-
 .fade-in {
   opacity: 0;
   animation: fadeInUp 0.35s ease forwards;
@@ -53,10 +75,11 @@ body {
   animation-delay: 0.2s;
 }
 
-/* ── Topbar ───────────────────────────────────────────────── */
+/* ── Topbar ── */
 .topbar {
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
 }
 .topbar-title {
   color: var(--color-text-main);
@@ -67,13 +90,17 @@ body {
   margin: 0;
 }
 .topbar-date {
-  background: #f0f8f5;
-  color: #4a7a65;
-  border: 1px solid #d4ece4;
+  background: var(--tint-blue);
+  color: var(--color-primary);
+  border: 1px solid var(--border-blue);
+  font-weight: 500;
 }
 .topbar-avatar {
   background: var(--color-primary);
-  color: #e1f5ee;
+  color: #fff;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.04em;
 }
 .topbar-user-name {
   color: var(--color-text-main);
@@ -84,93 +111,93 @@ body {
   margin: 0;
 }
 
-/* ── Mobile menu button ───────────────────────────────────── */
+/* ── Mobile menu button ── */
 .mobile-menu-btn {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-main);
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
   cursor: pointer;
 }
 
-/* ── Page header text ─────────────────────────────────────── */
+/* ── Page header text ── */
 .dental-page-title {
   font-size: 1.05rem;
   font-weight: 600;
-  color: #2c4b3e;
+  color: var(--color-primary-deep);
 }
 .dental-page-subtitle {
   font-size: 0.72rem;
-  color: #8bae9d;
+  color: var(--color-text-muted);
   margin-top: 0.2rem;
 }
 
-/* ── Stat cards ───────────────────────────────────────────── */
+/* ── Stat cards ── */
 .dental-stat-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 0.75rem;
+  border-radius: var(--radius-md);
   padding: 1rem;
+  box-shadow: var(--shadow-sm);
   transition:
     transform 0.2s,
     box-shadow 0.2s;
 }
 .dental-stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(45, 138, 110, 0.08);
+  box-shadow: var(--shadow-md);
 }
-
 .dental-stat-label {
   font-size: 0.7rem;
   color: var(--color-text-muted);
   margin-bottom: 0.25rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-weight: 500;
+  font-weight: 600;
 }
 .dental-stat-value {
   font-size: 1.6rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1;
   color: var(--color-text-main);
+  font-variant-numeric: tabular-nums;
 }
 .dental-stat-value--teal {
   color: var(--color-primary);
 }
 .dental-stat-value--blue {
-  color: #3b82f6;
+  color: #2563eb;
 }
 .dental-stat-value--yellow {
-  color: #f59e0b;
+  color: #d97706;
 }
 
-/* Stat icon badges */
 .dental-stat-icon {
   width: 2rem;
   height: 2rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 .dental-stat-icon--teal {
-  background: var(--tint-teal);
+  background: var(--tint-blue);
   color: var(--color-primary);
 }
 .dental-stat-icon--blue {
-  background: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
+  background: var(--tint-indigo);
+  color: #2563eb;
 }
 .dental-stat-icon--yellow {
-  background: rgba(245, 158, 11, 0.1);
-  color: #f59e0b;
+  background: #faeeda;
+  color: #d97706;
 }
 
-/* ── Dental record cards ──────────────────────────────────── */
+/* ── Dental record cards ── */
 .dental-record-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 0.75rem;
+  border-radius: var(--radius-md);
   padding: 1.25rem;
   cursor: pointer;
   transition:
@@ -180,8 +207,8 @@ body {
 }
 .dental-record-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(45, 138, 110, 0.1);
-  border-color: #b8ddd1;
+  box-shadow: var(--shadow-md);
+  border-color: #7aaae8;
 }
 
 /* Avatar initials */
@@ -189,11 +216,11 @@ body {
   flex-shrink: 0;
   width: 2.25rem;
   height: 2.25rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
   background: var(--color-primary);
   color: #fff;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -203,7 +230,7 @@ body {
 .dental-card-name {
   font-size: 0.88rem;
   font-weight: 600;
-  color: #2c4b3e;
+  color: var(--color-primary-deep);
   line-height: 1.3;
   white-space: nowrap;
   overflow: hidden;
@@ -211,7 +238,7 @@ body {
 }
 .dental-card-meta {
   font-size: 0.7rem;
-  color: #8bae9d;
+  color: var(--color-text-muted);
   margin-top: 0.15rem;
 }
 
@@ -225,35 +252,35 @@ body {
 }
 .dental-field-value {
   font-size: 0.8rem;
-  color: #4a5568;
+  color: #374151;
   line-height: 1.5;
 }
 .dental-field-value--empty {
-  color: #b0c4bb;
+  color: var(--color-text-soft);
   font-style: italic;
 }
 
 .dental-card-footer {
   padding-top: 0.6rem;
-  border-top: 1px solid #f0f4f2;
+  border-top: 1px solid var(--color-border-light);
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 .dental-card-date {
   font-size: 0.68rem;
-  color: #8bae9d;
+  color: var(--color-text-muted);
 }
 .dental-card-view-hint {
   font-size: 0.65rem;
-  color: #b0c4bb;
+  color: var(--color-text-soft);
   transition: color 0.15s;
 }
 .dental-record-card:hover .dental-card-view-hint {
   color: var(--color-primary);
 }
 
-/* ── Edit button ──────────────────────────────────────────── */
+/* ── Edit button ── */
 .dental-edit-btn {
   display: flex;
   align-items: center;
@@ -261,8 +288,8 @@ body {
   width: 1.75rem;
   height: 1.75rem;
   border-radius: 0.4rem;
-  border: 1px solid #d4ece4;
-  background: #f0f8f5;
+  border: 1px solid var(--border-blue);
+  background: var(--tint-blue);
   color: var(--color-primary);
   cursor: pointer;
   flex-shrink: 0;
@@ -272,12 +299,12 @@ body {
     transform 0.15s;
 }
 .dental-edit-btn:hover {
-  background: #d4ece4;
-  border-color: #a8d4c6;
+  background: #bed6e8;
+  border-color: #7aaae8;
   transform: scale(1.08);
 }
 
-/* ── Delete button ────────────────────────────────────────── */
+/* ── Delete button ── */
 .dental-delete-btn {
   display: flex;
   align-items: center;
@@ -285,9 +312,9 @@ body {
   width: 1.75rem;
   height: 1.75rem;
   border-radius: 0.4rem;
-  border: 1px solid #fce8e8;
+  border: 1px solid #fecaca;
   background: #fff5f5;
-  color: #c0504d;
+  color: #dc2626;
   cursor: pointer;
   flex-shrink: 0;
   transition:
@@ -296,20 +323,20 @@ body {
     transform 0.15s;
 }
 .dental-delete-btn:hover {
-  background: #fce8e8;
-  border-color: #e9b4b4;
+  background: #fee2e2;
+  border-color: #fca5a5;
   transform: scale(1.08);
 }
 
-/* ── Add Record button ────────────────────────────────────── */
+/* ── Add Record button ── */
 .dental-add-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: 600;
   background: var(--color-primary);
   color: #fff;
   border: none;
@@ -319,14 +346,15 @@ body {
     background 0.15s,
     transform 0.15s,
     box-shadow 0.15s;
+  box-shadow: 0 2px 6px rgba(30, 91, 168, 0.25);
 }
 .dental-add-btn:hover {
   background: var(--color-primary-dark);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(45, 138, 110, 0.3);
+  box-shadow: 0 4px 14px rgba(30, 91, 168, 0.35);
 }
 
-/* ── Search bar ───────────────────────────────────────────── */
+/* ── Search bar ── */
 .search-wrapper {
   position: relative;
   display: flex;
@@ -335,18 +363,18 @@ body {
 .search-icon {
   position: absolute;
   left: 0.75rem;
-  color: #8bae9d;
+  color: var(--color-text-muted);
   pointer-events: none;
   transition: color 0.2s;
 }
 .search-input {
   padding: 0.45rem 2.5rem 0.45rem 2.25rem;
-  border: 1.5px solid #dce8e2;
-  border-radius: 0.625rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
   font-size: 0.78rem;
   font-family: "DM Sans", system-ui, sans-serif;
-  color: #1f2e26;
-  background: #f9fbf9;
+  color: var(--color-text-main);
+  background: var(--color-surface);
   width: 220px;
   transition: all 0.2s ease;
 }
@@ -354,11 +382,11 @@ body {
   outline: none;
   border-color: var(--color-primary);
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(45, 138, 110, 0.1);
+  box-shadow: 0 0 0 3px rgba(30, 91, 168, 0.12);
   width: 260px;
 }
 .search-input::placeholder {
-  color: #a8c0b6;
+  color: var(--color-text-soft);
 }
 
 .search-clear {
@@ -367,7 +395,7 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  color: #a8c0b6;
+  color: var(--color-text-soft);
   padding: 0.1rem;
   border-radius: 0.25rem;
   display: none;
@@ -381,41 +409,43 @@ body {
   display: flex;
 }
 
-/* ── No-results state ─────────────────────────────────────── */
+/* ── No-results / Empty states ── */
 .dental-no-results {
   grid-column: 1 / -1;
   text-align: center;
   padding: 3rem 1rem;
   background: var(--color-surface);
-  border-radius: 0.75rem;
+  border-radius: var(--radius-md);
   border: 1px dashed var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
 }
 
-/* ── Empty state ──────────────────────────────────────────── */
 .dental-empty-state {
   grid-column: 1 / -1;
   text-align: center;
   padding: 4rem 1rem;
   background: var(--color-surface);
-  border-radius: 0.75rem;
+  border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
 }
 .dental-empty-icon {
-  color: #d1ddd8;
+  color: var(--border-blue);
   margin: 0 auto 1rem;
 }
 .dental-empty-title {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #2c4b3e;
+  color: var(--color-primary-deep);
 }
 .dental-empty-subtitle {
   font-size: 0.75rem;
-  color: #8bae9d;
+  color: var(--color-text-muted);
   margin-top: 0.25rem;
 }
 
-/* ── SVG icon size ────────────────────────────────────────── */
+/* ── SVG icon size ── */
 .hr-icon {
   width: 16px;
   height: 16px;
@@ -423,13 +453,14 @@ body {
   flex-shrink: 0;
 }
 
-/* ── Modal backdrop ───────────────────────────────────────── */
+/* ── Modal backdrop ── */
 .hr-modal-backdrop {
   position: fixed;
   inset: 0;
   left: 0;
   z-index: 50;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(10, 22, 40, 0.55);
+  backdrop-filter: blur(3px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -441,16 +472,17 @@ body {
   }
 }
 
-/* ── Modal container ──────────────────────────────────────── */
+/* ── Modal container ── */
 .hr-modal {
   background: var(--color-surface);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
   width: 100%;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  box-shadow: var(--shadow-lg);
 }
 .hr-modal--lg {
   max-width: 52rem;
@@ -481,20 +513,22 @@ body {
   }
 }
 
-/* ── Modal header ─────────────────────────────────────────── */
+/* ── Modal header ── */
 .hr-modal-header {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 16px 20px;
   flex-shrink: 0;
+  background: var(--color-primary-deep);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 .hr-modal-header-icon {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
-  background: rgba(45, 138, 110, 0.12);
-  color: var(--color-primary);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -503,13 +537,13 @@ body {
 .hr-modal-title {
   font-size: 14px;
   font-weight: 600;
-  color: var(--color-text-main);
+  color: #fff;
   margin: 0;
   line-height: 1.3;
 }
 .hr-modal-subtitle {
   font-size: 12px;
-  color: var(--color-text-muted);
+  color: var(--color-text-soft);
   margin: 2px 0 0;
   line-height: 1.3;
 }
@@ -517,9 +551,9 @@ body {
   width: 28px;
   height: 28px;
   border-radius: 6px;
-  border: 1px solid var(--color-border);
-  background: transparent;
-  color: var(--color-text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: #bed6e8;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -531,39 +565,41 @@ body {
     color 0.15s;
 }
 .hr-modal-close:hover {
-  background: #f0f8f5;
-  color: var(--color-text-main);
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
 }
 
-/* ── Divider ──────────────────────────────────────────────── */
+/* ── Divider ── */
 .hr-modal-divider {
   height: 1px;
   background: var(--color-border);
   flex-shrink: 0;
 }
 
-/* ── Modal body ───────────────────────────────────────────── */
+/* ── Modal body ── */
 .hr-modal-body {
   padding: 20px;
   overflow-y: auto;
   flex: 1;
   scrollbar-width: thin;
-  scrollbar-color: #b0d4c6 transparent;
+  scrollbar-color: var(--border-blue) transparent;
 }
 
-/* ── Modal footer ─────────────────────────────────────────── */
+/* ── Modal footer ── */
 .hr-modal-footer {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
   padding: 14px 20px;
   flex-shrink: 0;
+  background: var(--tint-blue);
+  border-top: 1px solid var(--color-border);
 }
 
-/* ── Buttons ──────────────────────────────────────────────── */
+/* ── Buttons ── */
 .hr-btn {
   padding: 7px 16px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 13px;
   font-weight: 500;
   font-family: "DM Sans", sans-serif;
@@ -579,8 +615,9 @@ body {
 }
 .hr-btn-primary {
   background: var(--color-primary);
-  color: #ffffff;
+  color: #fff;
   border: 1px solid var(--color-primary);
+  box-shadow: 0 2px 6px rgba(30, 91, 168, 0.25);
 }
 .hr-btn-primary:hover {
   background: var(--color-primary-dark);
@@ -588,14 +625,16 @@ body {
 }
 .hr-btn-ghost {
   background: transparent;
-  color: #4a7a65;
-  border: 1px solid #d4ece4;
+  color: var(--color-text-mid);
+  border: 1px solid var(--color-border);
 }
 .hr-btn-ghost:hover {
-  background: #f0f8f5;
+  background: var(--tint-blue);
+  border-color: var(--border-blue);
+  color: var(--color-primary);
 }
 
-/* ── Form helpers ─────────────────────────────────────────── */
+/* ── Form helpers ── */
 .hr-form-stack {
   display: flex;
   flex-direction: column;
@@ -608,12 +647,12 @@ body {
 }
 .hr-form-label {
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   color: #374151;
   display: block;
 }
 .hr-required {
-  color: #e05050;
+  color: #dc2626;
   margin-left: 2px;
 }
 
@@ -622,8 +661,8 @@ body {
 .hr-form-textarea {
   width: 100%;
   padding: 8px 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
   font-size: 13px;
   font-family: "DM Sans", sans-serif;
   color: var(--color-text-main);
@@ -634,19 +673,24 @@ body {
   appearance: auto;
   box-sizing: border-box;
 }
+.hr-form-input:hover,
+.hr-form-select:hover,
+.hr-form-textarea:hover {
+  border-color: #7aaae8;
+}
 .hr-form-input:focus,
 .hr-form-select:focus,
 .hr-form-textarea:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(45, 138, 110, 0.12);
+  box-shadow: 0 0 0 3px rgba(30, 91, 168, 0.12);
 }
 .hr-form-textarea {
   resize: vertical;
   min-height: 80px;
 }
 
-/* ── Procedure rows ───────────────────────────────────────── */
+/* ── Procedure rows ── */
 .hr-procedure-row {
   display: flex;
   gap: 8px;
@@ -666,7 +710,7 @@ body {
   border: 1px solid #fca5a5;
   border-radius: 6px;
   background: transparent;
-  color: #ef4444;
+  color: #dc2626;
   font-size: 18px;
   line-height: 1;
   cursor: pointer;
@@ -677,7 +721,7 @@ body {
   transition: background 0.15s;
 }
 .hr-remove-btn:hover {
-  background: #fef2f2;
+  background: #fee2e2;
 }
 
 .hr-add-procedure-btn {
@@ -695,7 +739,7 @@ body {
   color: var(--color-primary-dark);
 }
 
-/* ── Modal slide animation ────────────────────────────────── */
+/* ── Modal slide animation ── */
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -710,7 +754,23 @@ body {
   animation: slideDown 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ── Responsive ───────────────────────────────────────────── */
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-blue);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7aaae8;
+}
+
+/* ── Responsive ── */
 @media (max-width: 640px) {
   .hr-modal-body {
     padding: 14px;

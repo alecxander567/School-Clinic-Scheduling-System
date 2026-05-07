@@ -3,30 +3,39 @@ class AppointmentModal
 {
     public static function render($controller, $currentUserId = null, $editAppointment = null)
     {
-        $services = $controller->getServices();
-        $statuses = $controller->getStatuses();
+        $services  = $controller->getServices();
+        $statuses  = $controller->getStatuses();
         $providers = $controller->getProviders();
 
         // Determine if we're in edit mode
-        $isEdit = $editAppointment !== null;
-        $modalTitle = $isEdit ? 'Edit Appointment' : 'Schedule Provider Visit';
-        $submitText = $isEdit ? 'Update Visit' : 'Schedule Visit';
-        $actionUrl = $isEdit ? '../api/update-appointment.php' : '../api/create-appointment.php';
+        $isEdit      = $editAppointment !== null;
+        $modalTitle  = $isEdit ? 'Edit Appointment' : 'Schedule Provider Visit';
+        $submitText  = $isEdit ? 'Update Visit' : 'Schedule Visit';
+        $actionUrl   = $isEdit ? '../api/update-appointment.php' : '../api/create-appointment.php';
 
         // Get appointment data for edit mode
         $appointmentData = $isEdit ? $editAppointment : null;
 ?>
         <div id="appointmentModal" class="fixed inset-0 z-50 hidden items-center justify-center" style="background-color: rgba(0,0,0,0.5);">
-            <div id="appointmentModalBox" class="bg-white rounded-xl shadow-xl max-w-2xl w-full mx-4">
-                <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 rounded-t-xl">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-semibold" style="color:#1a2e25;"><?php echo $modalTitle; ?></h3>
-                        <button type="button" onclick="closeAppointmentModal()" class="text-gray-400 hover:text-gray-600">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <div id="appointmentModalBox" class="rounded-xl shadow-xl max-w-2xl w-full mx-4" style="background:#ffffff; border:1px solid #d4e6f1;">
+
+                <!-- Modal header -->
+                <div class="px-6 py-4 rounded-t-xl flex items-center justify-between" style="background:#e8f1f8; border-bottom:1px solid #d4e6f1;">
+                    <div class="flex items-center gap-2">
+                        <div style="width:1.75rem; height:1.75rem; border-radius:0.5rem; background:#e6f1fb; border:1px solid #b5d4f4; display:flex; align-items:center; justify-content:center; color:#1e5ba8; flex-shrink:0;">
+                            <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                        </button>
+                        </div>
+                        <h3 style="font-size:0.875rem; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:#004b87; font-family:'DM Sans',system-ui,sans-serif;">
+                            <?php echo $modalTitle; ?>
+                        </h3>
                     </div>
+                    <button type="button" onclick="closeAppointmentModal()" style="color:#6b8fa7; background:none; border:none; cursor:pointer; padding:0.25rem; border-radius:0.375rem; transition:color 0.15s;" onmouseover="this.style.color='#1e5ba8';" onmouseout="this.style.color='#6b8fa7';">
+                        <svg style="width:18px;height:18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
 
                 <form id="appointmentForm" method="POST" action="<?php echo $actionUrl; ?>">
@@ -38,11 +47,13 @@ class AppointmentModal
 
                             <!-- Provider Selection -->
                             <div class="md:col-span-2">
-                                <label class="block text-xs font-semibold uppercase tracking-wide mb-2" style="color:#2c4b3e;">
-                                    Healthcare Provider <span class="text-red-500 ml-1">*</span>
+                                <label style="display:block; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#1a2e25; margin-bottom:0.4rem;">
+                                    Healthcare Provider <span style="color:#a32d2d; margin-left:0.2rem;">*</span>
                                 </label>
                                 <select name="provider_id" id="provider_id" required
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#2d8a6e]">
+                                    style="width:100%; padding:0.575rem 0.875rem; border:1.5px solid #d4e6f1; border-radius:0.5rem; font-size:0.875rem; font-family:'DM Sans',system-ui,sans-serif; color:#1a2e25; background:#ffffff; appearance:none; -webkit-appearance:none; background-image:url(\" data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231e5ba8' stroke-width='2' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E\"); background-repeat:no-repeat; background-position:right 0.75rem center; background-size:0.9rem; padding-right:2.25rem; cursor:pointer;"
+                                    onfocus="this.style.borderColor='#1e5ba8'; this.style.boxShadow='0 0 0 3px rgba(30,91,168,0.12)';"
+                                    onblur="this.style.borderColor='#d4e6f1'; this.style.boxShadow='none';">
                                     <option value="">Select Provider</option>
                                     <?php foreach ($providers as $provider): ?>
                                         <option value="<?php echo $provider['id']; ?>"
@@ -55,11 +66,13 @@ class AppointmentModal
 
                             <!-- Service Type -->
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wide mb-2" style="color:#2c4b3e;">
-                                    Service Type <span class="text-red-500 ml-1">*</span>
+                                <label style="display:block; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#1a2e25; margin-bottom:0.4rem;">
+                                    Service Type <span style="color:#a32d2d; margin-left:0.2rem;">*</span>
                                 </label>
                                 <select name="service_id" id="service_id" required
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#2d8a6e]">
+                                    style="width:100%; padding:0.575rem 0.875rem; border:1.5px solid #d4e6f1; border-radius:0.5rem; font-size:0.875rem; font-family:'DM Sans',system-ui,sans-serif; color:#1a2e25; background:#ffffff; appearance:none; -webkit-appearance:none; background-image:url(\" data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231e5ba8' stroke-width='2' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E\"); background-repeat:no-repeat; background-position:right 0.75rem center; background-size:0.9rem; padding-right:2.25rem; cursor:pointer;"
+                                    onfocus="this.style.borderColor='#1e5ba8'; this.style.boxShadow='0 0 0 3px rgba(30,91,168,0.12)';"
+                                    onblur="this.style.borderColor='#d4e6f1'; this.style.boxShadow='none';">
                                     <option value="">Select Service</option>
                                     <?php foreach ($services as $service): ?>
                                         <option value="<?php echo $service['id']; ?>"
@@ -72,11 +85,13 @@ class AppointmentModal
 
                             <!-- Status -->
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wide mb-2" style="color:#2c4b3e;">
-                                    Status <span class="text-red-500 ml-1">*</span>
+                                <label style="display:block; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#1a2e25; margin-bottom:0.4rem;">
+                                    Status <span style="color:#a32d2d; margin-left:0.2rem;">*</span>
                                 </label>
                                 <select name="status_id" id="status_id" required
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#2d8a6e]">
+                                    style="width:100%; padding:0.575rem 0.875rem; border:1.5px solid #d4e6f1; border-radius:0.5rem; font-size:0.875rem; font-family:'DM Sans',system-ui,sans-serif; color:#1a2e25; background:#ffffff; appearance:none; -webkit-appearance:none; background-image:url(\" data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231e5ba8' stroke-width='2' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E\"); background-repeat:no-repeat; background-position:right 0.75rem center; background-size:0.9rem; padding-right:2.25rem; cursor:pointer;"
+                                    onfocus="this.style.borderColor='#1e5ba8'; this.style.boxShadow='0 0 0 3px rgba(30,91,168,0.12)';"
+                                    onblur="this.style.borderColor='#d4e6f1'; this.style.boxShadow='none';">
                                     <option value="">Select Status</option>
                                     <?php foreach ($statuses as $status): ?>
                                         <option value="<?php echo $status['id']; ?>"
@@ -89,57 +104,66 @@ class AppointmentModal
 
                             <!-- Visit Date -->
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wide mb-2" style="color:#2c4b3e;">
-                                    Visit Date <span class="text-red-500 ml-1">*</span>
+                                <label style="display:block; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#1a2e25; margin-bottom:0.4rem;">
+                                    Visit Date <span style="color:#a32d2d; margin-left:0.2rem;">*</span>
                                 </label>
                                 <input type="date" name="visit_date" id="visit_date" required
                                     min="<?php echo date('Y-m-d'); ?>"
                                     value="<?php echo $isEdit ? $appointmentData['visit_date'] : ''; ?>"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#2d8a6e]">
+                                    style="width:100%; padding:0.575rem 0.875rem; border:1.5px solid #d4e6f1; border-radius:0.5rem; font-size:0.875rem; font-family:'DM Sans',system-ui,sans-serif; color:#1a2e25; background:#ffffff;"
+                                    onfocus="this.style.borderColor='#1e5ba8'; this.style.boxShadow='0 0 0 3px rgba(30,91,168,0.12)';"
+                                    onblur="this.style.borderColor='#d4e6f1'; this.style.boxShadow='none';">
                             </div>
 
                             <!-- Start Time -->
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wide mb-2" style="color:#2c4b3e;">
-                                    Start Time <span class="text-red-500 ml-1">*</span>
+                                <label style="display:block; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#1a2e25; margin-bottom:0.4rem;">
+                                    Start Time <span style="color:#a32d2d; margin-left:0.2rem;">*</span>
                                 </label>
                                 <input type="time" name="start_time" id="start_time" required
                                     value="<?php echo $isEdit ? $appointmentData['start_time'] : ''; ?>"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#2d8a6e]">
+                                    style="width:100%; padding:0.575rem 0.875rem; border:1.5px solid #d4e6f1; border-radius:0.5rem; font-size:0.875rem; font-family:'DM Sans',system-ui,sans-serif; color:#1a2e25; background:#ffffff;"
+                                    onfocus="this.style.borderColor='#1e5ba8'; this.style.boxShadow='0 0 0 3px rgba(30,91,168,0.12)';"
+                                    onblur="this.style.borderColor='#d4e6f1'; this.style.boxShadow='none';">
                             </div>
 
                             <!-- End Time -->
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wide mb-2" style="color:#2c4b3e;">
-                                    End Time <span class="text-red-500 ml-1">*</span>
+                                <label style="display:block; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#1a2e25; margin-bottom:0.4rem;">
+                                    End Time <span style="color:#a32d2d; margin-left:0.2rem;">*</span>
                                 </label>
                                 <input type="time" name="end_time" id="end_time" required
                                     value="<?php echo $isEdit ? $appointmentData['end_time'] : ''; ?>"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#2d8a6e]">
+                                    style="width:100%; padding:0.575rem 0.875rem; border:1.5px solid #d4e6f1; border-radius:0.5rem; font-size:0.875rem; font-family:'DM Sans',system-ui,sans-serif; color:#1a2e25; background:#ffffff;"
+                                    onfocus="this.style.borderColor='#1e5ba8'; this.style.boxShadow='0 0 0 3px rgba(30,91,168,0.12)';"
+                                    onblur="this.style.borderColor='#d4e6f1'; this.style.boxShadow='none';">
                             </div>
 
                             <!-- Maximum Students -->
                             <div>
-                                <label class="block text-xs font-semibold uppercase tracking-wide mb-2" style="color:#2c4b3e;">
-                                    Maximum Students <span class="text-red-500 ml-1">*</span>
+                                <label style="display:block; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#1a2e25; margin-bottom:0.4rem;">
+                                    Maximum Students <span style="color:#a32d2d; margin-left:0.2rem;">*</span>
                                 </label>
                                 <input type="number" name="max_students" id="max_students" required
                                     placeholder="Max students for this visit"
-                                    min="1"
-                                    max="100"
+                                    min="1" max="100"
                                     value="<?php echo $isEdit ? $appointmentData['max_students'] : '20'; ?>"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#2d8a6e]">
-                                <p class="text-xs text-gray-500 mt-1">Number of students that can sign up</p>
+                                    style="width:100%; padding:0.575rem 0.875rem; border:1.5px solid #d4e6f1; border-radius:0.5rem; font-size:0.875rem; font-family:'DM Sans',system-ui,sans-serif; color:#1a2e25; background:#ffffff;"
+                                    onfocus="this.style.borderColor='#1e5ba8'; this.style.boxShadow='0 0 0 3px rgba(30,91,168,0.12)';"
+                                    onblur="this.style.borderColor='#d4e6f1'; this.style.boxShadow='none';">
+                                <p style="font-size:0.68rem; color:#8fa6ba; margin-top:0.3rem;">Number of students that can sign up</p>
                             </div>
 
                             <!-- Notes -->
                             <div class="md:col-span-2">
-                                <label class="block text-xs font-semibold uppercase tracking-wide mb-2" style="color:#2c4b3e;">
+                                <label style="display:block; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#1a2e25; margin-bottom:0.4rem;">
                                     Special Instructions / Notes
                                 </label>
                                 <textarea name="notes" id="notes" rows="3"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#2d8a6e]"
-                                    placeholder="Any special requirements or instructions for this visit..."><?php echo $isEdit ? htmlspecialchars($appointmentData['notes']) : ''; ?></textarea>
+                                    placeholder="Any special requirements or instructions for this visit..."
+                                    style="width:100%; padding:0.575rem 0.875rem; border:1.5px solid #d4e6f1; border-radius:0.5rem; font-size:0.875rem; font-family:'DM Sans',system-ui,sans-serif; color:#1a2e25; background:#ffffff; resize:vertical;"
+                                    onfocus="this.style.borderColor='#1e5ba8'; this.style.boxShadow='0 0 0 3px rgba(30,91,168,0.12)';"
+                                    onblur="this.style.borderColor='#d4e6f1'; this.style.boxShadow='none';"><?php echo $isEdit ? htmlspecialchars($appointmentData['notes']) : ''; ?></textarea>
                             </div>
 
                             <!-- Hidden fields -->
@@ -147,13 +171,18 @@ class AppointmentModal
                         </div>
                     </div>
 
-                    <div class="px-6 py-4 border-t border-gray-100 flex justify-end gap-3 bg-gray-50 rounded-b-xl">
+                    <!-- Modal footer -->
+                    <div class="px-6 py-4 rounded-b-xl flex justify-end gap-3" style="background:#e8f1f8; border-top:1px solid #d4e6f1;">
                         <button type="button" onclick="closeAppointmentModal()"
-                            class="px-4 py-2 text-sm rounded-lg border border-gray-300 hover:bg-gray-50 transition">
+                            style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.575rem 1.1rem; border-radius:0.5rem; font-size:0.8rem; font-weight:600; font-family:'DM Sans',system-ui,sans-serif; background:#ffffff; color:#1a2e25; border:1px solid #d4e6f1; cursor:pointer; transition:all 0.18s ease;"
+                            onmouseover="this.style.background='#e6f1fb'; this.style.borderColor='#b5d4f4';"
+                            onmouseout="this.style.background='#ffffff'; this.style.borderColor='#d4e6f1';">
                             Cancel
                         </button>
                         <button type="submit"
-                            class="px-4 py-2 text-sm rounded-lg text-white transition bg-[#2d8a6e] hover:bg-[#247a60]">
+                            style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.575rem 1.25rem; border-radius:0.5rem; font-size:0.8rem; font-weight:600; font-family:'DM Sans',system-ui,sans-serif; background:#1e5ba8; color:#ffffff; border:none; cursor:pointer; transition:all 0.18s ease;"
+                            onmouseover="this.style.background='#004b87'; this.style.boxShadow='0 4px 14px rgba(30,91,168,0.3)';"
+                            onmouseout="this.style.background='#1e5ba8'; this.style.boxShadow='none';">
                             <?php echo $submitText; ?>
                         </button>
                     </div>
@@ -181,7 +210,6 @@ class AppointmentModal
                 modal.classList.add('flex');
                 document.body.style.overflow = 'hidden';
 
-                // Replay slide-down animation every time the modal opens
                 const box = document.getElementById('appointmentModalBox');
                 if (box) {
                     box.classList.remove('apt-modal-animate');
@@ -226,7 +254,6 @@ class AppointmentModal
 
                             isEditMode = true;
 
-                            // Force-close first so the animation always replays cleanly
                             const modal = document.getElementById('appointmentModal');
                             const box = document.getElementById('appointmentModalBox');
                             modal.classList.add('hidden');
@@ -252,23 +279,19 @@ class AppointmentModal
                 document.body.style.overflow = '';
                 document.getElementById('appointmentForm').reset();
 
-                // Reset form action to create
                 document.getElementById('appointmentForm').action = 'api/create-appointment.php';
                 isEditMode = false;
             }
 
-            // Close modal when clicking outside
             document.getElementById('appointmentModal').addEventListener('click', function(e) {
                 if (e.target === this) {
                     closeAppointmentModal();
                 }
             });
 
-            // Validate end time is after start time
             document.getElementById('end_time').addEventListener('change', function() {
                 const startTime = document.getElementById('start_time').value;
                 const endTime = this.value;
-
                 if (startTime && endTime && endTime <= startTime) {
                     alert('End time must be after start time');
                     this.value = '';
@@ -290,13 +313,11 @@ class AppointmentModal
                         method: 'POST',
                         body: formData
                     });
-
                     const result = await response.json();
 
                     if (result.success) {
                         closeAppointmentModal();
-                        // Store flash message in sessionStorage so it survives the reload
-                        sessionStorage.setItem('flash_type', isEditMode ? 'success' : 'success');
+                        sessionStorage.setItem('flash_type', 'success');
                         sessionStorage.setItem('flash_message', isEditMode ?
                             'Appointment updated successfully!' :
                             'Provider visit scheduled successfully!');
@@ -319,8 +340,7 @@ class AppointmentModal
                 }
             });
 
-            // On page load, check sessionStorage for a pending flash and render it
-            // using the same PHP Alert markup pattern
+            // On page load, check sessionStorage for a pending flash
             (function() {
                 const type = sessionStorage.getItem('flash_type');
                 const message = sessionStorage.getItem('flash_message');
@@ -330,11 +350,11 @@ class AppointmentModal
 
                 const configs = {
                     success: {
-                        bg: '#f0faf5',
-                        border: '#a8dcc0',
-                        accent: '#2d8a6e',
-                        textTitle: '#1a4a38',
-                        textBody: '#2c5a48',
+                        bg: '#f0f6ff',
+                        border: '#b5d4f4',
+                        accent: '#1e5ba8',
+                        textTitle: '#0c447c',
+                        textBody: '#185fa5',
                         label: 'Success',
                         iconPath: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
                     },
@@ -359,9 +379,9 @@ class AppointmentModal
                     info: {
                         bg: '#f0f6ff',
                         border: '#b3cef5',
-                        accent: '#2563eb',
-                        textTitle: '#1a3a7a',
-                        textBody: '#2c4fa8',
+                        accent: '#1e5ba8',
+                        textTitle: '#0c447c',
+                        textBody: '#185fa5',
                         label: 'Info',
                         iconPath: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
                     },
@@ -413,8 +433,6 @@ class AppointmentModal
             </svg>
         </button>`;
 
-                // Insert into the same spot Alert::displayFlash() renders — look for
-                // the first <main> tag and prepend there, just like the PHP flash does.
                 const main = document.querySelector('main');
                 if (main) {
                     main.insertBefore(el, main.firstChild);
@@ -422,13 +440,11 @@ class AppointmentModal
                     document.body.prepend(el);
                 }
 
-                // Animate in (mirrors the PHP component's double-rAF trick)
                 requestAnimationFrame(() => requestAnimationFrame(() => {
                     el.style.opacity = '1';
                     el.style.transform = 'translateY(0)';
                 }));
 
-                // Auto-dismiss after 5s
                 setTimeout(() => {
                     el.style.opacity = '0';
                     el.style.transform = 'translateY(-4px)';

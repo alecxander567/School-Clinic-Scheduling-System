@@ -237,7 +237,7 @@ class HealthRecordModal
         <style>
         .hr-modal-backdrop {
             position: fixed; inset: 0;
-            background: rgba(15,23,18,0.55);
+            background: rgba(10,20,42,0.55);
             backdrop-filter: blur(3px);
             -webkit-backdrop-filter: blur(3px);
             z-index: 1000;
@@ -247,7 +247,7 @@ class HealthRecordModal
         .hr-modal {
             background: #ffffff;
             border-radius: 1rem;
-            box-shadow: 0 24px 64px rgba(0,0,0,0.14), 0 4px 16px rgba(0,0,0,0.08), 0 0 0 1px rgba(45,138,110,0.08);
+            box-shadow: 0 24px 64px rgba(30,91,168,0.12), 0 4px 16px rgba(30,91,168,0.08), 0 0 0 1px rgba(30,91,168,0.08);
             width: 100%; max-height: 90vh; overflow-y: auto;
             display: flex; flex-direction: column;
         }
@@ -263,110 +263,116 @@ class HealthRecordModal
         .hr-modal-header {
             display: flex; align-items: flex-start; gap: 0.75rem;
             padding: 1.25rem 1.5rem;
+            background: #e8f1f8;
+            border-bottom: 1px solid #d4e6f1;
+            border-radius: 1rem 1rem 0 0;
         }
         .hr-modal-header-icon {
             flex-shrink: 0; width: 2.25rem; height: 2.25rem;
-            border-radius: 0.6rem; background: #eaf5f0; border: 1px solid #c4e5d9;
-            display: flex; align-items: center; justify-content: center; color: #2d8a6e;
+            border-radius: 0.6rem; background: #e6f1fb; border: 1px solid #b5d4f4;
+            display: flex; align-items: center; justify-content: center; color: #1e5ba8;
         }
-        .hr-modal-title   { font-size: 0.95rem; font-weight: 600; color: #1a2e25; margin: 0; line-height: 1.3; }
-        .hr-modal-subtitle { font-size: 0.72rem; color: #7a9b8a; margin: 0.15rem 0 0; }
+        .hr-modal-title   { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #004b87; margin: 0; line-height: 1.3; }
+        .hr-modal-subtitle { font-size: 0.72rem; color: #6b8fa7; margin: 0.15rem 0 0; }
         .hr-modal-close {
             flex-shrink: 0; margin-left: auto; width: 2rem; height: 2rem;
-            border-radius: 0.4rem; border: 1px solid #e4ede7; background: #f6faf7; color: #627a6e;
+            border-radius: 0.4rem; border: 1px solid #d4e6f1; background: #ffffff; color: #6b8fa7;
             display: flex; align-items: center; justify-content: center; cursor: pointer;
             transition: background 0.15s, color 0.15s, border-color 0.15s;
         }
         .hr-modal-close:hover { background: #fce8e8; border-color: #f0b8b8; color: #c0504d; }
         .hr-modal-divider {
             height: 1px;
-            background: linear-gradient(to right, transparent, #e4ede7 20%, #e4ede7 80%, transparent);
+            background: #d4e6f1;
             flex-shrink: 0;
         }
         .hr-modal-body   { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 1rem; flex: 1; }
-        .hr-modal-footer { padding: 1rem 1.5rem; display: flex; justify-content: flex-end; gap: 0.5rem; }
+        .hr-modal-footer {
+            padding: 1rem 1.5rem; display: flex; justify-content: flex-end; gap: 0.5rem;
+            background: #e8f1f8; border-top: 1px solid #d4e6f1; border-radius: 0 0 1rem 1rem;
+        }
         .hr-field-group  { display: flex; flex-direction: column; gap: 0.35rem; }
         .hr-modal-label  {
             display: inline-flex; align-items: center; gap: 0.3rem;
-            font-size: 0.67rem; font-weight: 700; color: #2c4b3e;
+            font-size: 0.67rem; font-weight: 700; color: #1a2e25;
             text-transform: uppercase; letter-spacing: 0.07em;
         }
-        .hr-required { color: #c0504d; }
-        .hr-field-hint { font-size: 0.68rem; color: #9ab8ab; margin: 0; }
+        .hr-required { color: #a32d2d; }
+        .hr-field-hint { font-size: 0.68rem; color: #8fa6ba; margin: 0; }
         .hr-select-wrapper { position: relative; }
         .hr-modal-select {
             width: 100%; appearance: none; -webkit-appearance: none;
-            padding: 0.55rem 2.5rem 0.55rem 0.75rem;
-            border: 1.5px solid #e2ebe6; border-radius: 0.6rem;
-            font-size: 0.82rem; font-family: "DM Sans", system-ui, sans-serif;
-            color: #1f2e26; background: #f9fbf9; cursor: pointer;
+            padding: 0.575rem 2.5rem 0.575rem 0.875rem;
+            border: 1.5px solid #d4e6f1; border-radius: 0.5rem;
+            font-size: 0.875rem; font-family: "DM Sans", system-ui, sans-serif;
+            color: #1a2e25; background: #ffffff; cursor: pointer;
             transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
         }
-        .hr-modal-select:focus { outline:none; border-color:#2d8a6e; background:#fff; box-shadow:0 0 0 3px rgba(45,138,110,0.12); }
-        .hr-select-arrow { position:absolute; right:0.75rem; top:50%; transform:translateY(-50%); color:#7a9b8a; pointer-events:none; }
+        .hr-modal-select:focus { outline:none; border-color:#1e5ba8; background:#f8fafd; box-shadow:0 0 0 3px rgba(30,91,168,0.12); }
+        .hr-select-arrow { position:absolute; right:0.75rem; top:50%; transform:translateY(-50%); color:#6b8fa7; pointer-events:none; }
         .hr-textarea-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         @media (max-width: 540px) { .hr-textarea-grid { grid-template-columns: 1fr; } }
         .hr-textarea-wrapper { position: relative; }
         .hr-modal-textarea {
-            width: 100%; padding: 0.55rem 0.75rem;
-            border: 1.5px solid #e2ebe6; border-radius: 0.6rem;
-            font-size: 0.82rem; font-family: "DM Sans", system-ui, sans-serif;
-            color: #1f2e26; background: #f9fbf9; resize: vertical; min-height: 6rem; line-height: 1.6;
+            width: 100%; padding: 0.575rem 0.875rem;
+            border: 1.5px solid #d4e6f1; border-radius: 0.5rem;
+            font-size: 0.875rem; font-family: "DM Sans", system-ui, sans-serif;
+            color: #1a2e25; background: #ffffff; resize: vertical; min-height: 6rem; line-height: 1.6;
             transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
         }
-        .hr-modal-textarea:focus { outline:none; border-color:#2d8a6e; background:#fff; box-shadow:0 0 0 3px rgba(45,138,110,0.12); }
-        .hr-modal-textarea::placeholder { color: #afc5bb; }
+        .hr-modal-textarea:focus { outline:none; border-color:#1e5ba8; background:#f8fafd; box-shadow:0 0 0 3px rgba(30,91,168,0.12); }
+        .hr-modal-textarea::placeholder { color: #8fa6ba; }
         .hr-textarea-badge {
             position:absolute; top:0.45rem; right:0.5rem;
             font-size:0.6rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase;
-            background:#f0f7f3; color:#6baa8c; border:1px solid #c8dfd4; border-radius:9999px;
+            background:#e6f1fb; color:#185fa5; border:1px solid #b5d4f4; border-radius:9999px;
             padding:0.1rem 0.45rem; pointer-events:none;
         }
         .hr-identity-strip {
             display:flex; align-items:center; gap:0.875rem;
-            background:#f3f9f6; border:1px solid #daeee5; border-radius:0.75rem; padding:0.875rem 1rem;
+            background:#e8f1f8; border:1px solid #d4e6f1; border-radius:0.75rem; padding:0.875rem 1rem;
         }
         .hr-identity-avatar {
             flex-shrink:0; width:2.75rem; height:2.75rem; border-radius:0.75rem;
-            background:#2d8a6e; color:#fff; font-size:0.85rem; font-weight:600;
+            background:#1e5ba8; color:#fff; font-size:0.85rem; font-weight:600;
             display:flex; align-items:center; justify-content:center; letter-spacing:0.02em;
         }
         .hr-identity-name { font-size:0.88rem; font-weight:600; color:#1a2e25; margin:0 0 0.3rem; }
         .hr-identity-meta { display:flex; flex-wrap:wrap; gap:0.35rem; }
         .hr-meta-pill {
-            font-size:0.67rem; font-weight:600; color:#2d6b52;
-            background:#e6f5ee; border:1px solid #b8ddd0; border-radius:9999px; padding:0.1rem 0.5rem;
+            font-size:0.67rem; font-weight:600; color:#185fa5;
+            background:#e6f1fb; border:1px solid #b5d4f4; border-radius:9999px; padding:0.1rem 0.5rem;
         }
-        .hr-view-section { border:1px solid #e8f0eb; border-radius:0.75rem; overflow:hidden; }
+        .hr-view-section { border:1px solid #d4e6f1; border-radius:0.75rem; overflow:hidden; }
         .hr-view-section-header {
             display:flex; align-items:center; gap:0.4rem; padding:0.55rem 0.875rem;
-            background:#f3f9f6; border-bottom:1px solid #e8f0eb;
-            font-size:0.67rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:#2d8a6e;
+            background:#e8f1f8; border-bottom:1px solid #d4e6f1;
+            font-size:0.67rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:#1e5ba8;
         }
         .hr-view-content {
-            padding:0.75rem 0.875rem; font-size:0.82rem; color:#2c4b3e;
+            padding:0.75rem 0.875rem; font-size:0.82rem; color:#1a2e25;
             line-height:1.65; min-height:3rem; white-space:pre-wrap;
         }
-        .hr-view-content--empty { color:#9ab8ab; font-style:italic; }
-        .hr-view-timestamp { font-size:0.68rem; color:#9ab8ab; display:flex; align-items:center; gap:0.3rem; margin:0; }
+        .hr-view-content--empty { color:#8fa6ba; font-style:italic; }
+        .hr-view-timestamp { font-size:0.68rem; color:#8fa6ba; display:flex; align-items:center; gap:0.3rem; margin:0; }
         .hr-btn {
             display:inline-flex; align-items:center; gap:0.35rem;
             padding:0.5rem 1.1rem; border-radius:0.55rem;
             font-size:0.8rem; font-weight:600; font-family:"DM Sans",system-ui,sans-serif;
             cursor:pointer; transition:all 0.18s ease; border:1.5px solid transparent; white-space:nowrap;
         }
-        .hr-btn-primary { background:#2d8a6e; color:#fff; border-color:#2d8a6e; }
-        .hr-btn-primary:hover { background:#236b56; border-color:#236b56; transform:translateY(-1px); box-shadow:0 4px 14px rgba(45,138,110,0.3); }
+        .hr-btn-primary { background:#1e5ba8; color:#fff; border-color:#1e5ba8; }
+        .hr-btn-primary:hover { background:#004b87; border-color:#004b87; transform:translateY(-1px); box-shadow:0 4px 14px rgba(30,91,168,0.3); }
         .hr-btn-primary:active { transform:translateY(0); box-shadow:none; }
-        .hr-btn-ghost { background:#f4f8f5; color:#456b5b; border-color:#d4e6dd; }
-        .hr-btn-ghost:hover { background:#e8f2ec; border-color:#b8d8ca; }
+        .hr-btn-ghost { background:#ffffff; color:#1a2e25; border-color:#d4e6f1; }
+        .hr-btn-ghost:hover { background:#e6f1fb; border-color:#b5d4f4; }
         .hr-edit-btn {
             flex-shrink:0; width:1.75rem; height:1.75rem; border-radius:0.4rem;
-            border:1px solid #c8dfd4; background:#f0f7f3; color:#2d8a6e;
+            border:1px solid #b5d4f4; background:#e6f1fb; color:#1e5ba8;
             display:flex; align-items:center; justify-content:center; cursor:pointer;
             transition:background 0.15s, border-color 0.15s, color 0.15s;
         }
-        .hr-edit-btn:hover { background:#d4eddf; border-color:#2d8a6e; }
+        .hr-edit-btn:hover { background:#d0e8f8; border-color:#1e5ba8; }
         </style>';
     }
 

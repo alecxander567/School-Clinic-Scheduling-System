@@ -2,7 +2,7 @@
 require_once __DIR__ . '/config/database.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/config/session.php';
-require_once __DIR__ . '/components/Sidebar.php';
+require_once __DIR__ . '/components/sidebar.php';
 require_once __DIR__ . '/controllers/ProfileController.php';
 require_once __DIR__ . '/components/Alert.php';
 

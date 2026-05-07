@@ -1,34 +1,34 @@
 /* ── Design tokens ────────────────────────────────────────── */
 :root {
-  --color-bg: #f0f7f4;
+  --color-bg: #e8f1f8;
   --color-surface: #ffffff;
-  --color-border: #ddeee7;
+  --color-border: #d4e6f1;
 
-  --color-primary: #2d8a6e;
-  --color-primary-dark: #0f6e56;
+  --color-primary: #1e5ba8;
+  --color-primary-dark: #004b87;
   --color-primary-deep: #1a2e25;
 
   --color-text-main: #1a2e25;
-  --color-text-muted: #7aaa96;
-  --color-text-soft: #9ab5aa;
-  --color-text-mid: #5a8a79;
+  --color-text-muted: #6b8fa7;
+  --color-text-soft: #8fa6ba;
+  --color-text-mid: #4a7a9a;
 
   /* Tint fills */
-  --tint-teal: #e1f5ee;
+  --tint-teal: #e8f1f8;
   --tint-blue: #e6f1fb;
   --tint-amber: #faeeda;
   --tint-red: #fcebeb;
   --tint-gray: #f1efe8;
 
   /* Accent text colors */
-  --accent-blue: #185fa5;
+  --accent-blue: #1e5ba8;
   --accent-amber: #ba7517;
   --accent-amber-dark: #854f0b;
   --accent-red: #a32d2d;
   --accent-gray: #5f5e5a;
 
   /* Borders for tints */
-  --border-teal: #9fe1cb;
+  --border-teal: #bed6e8;
   --border-blue: #b5d4f4;
   --border-amber: #fac775;
   --border-gray: #d3d1c7;
@@ -52,7 +52,7 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #c5d9d0;
+  background: #bed6e8;
   border-radius: 5px;
 }
 
@@ -161,16 +161,16 @@ body {
 }
 
 .welcome-banner-title {
-  color: #e1f5ee;
+  color: #e8f1f8;
 }
 
 .welcome-banner-subtitle {
-  color: #9fe1cb;
+  color: #bed6e8;
 }
 
 .welcome-banner-pill {
   background: rgba(255, 255, 255, 0.15);
-  color: #e1f5ee;
+  color: #e8f1f8;
 }
 
 /* ── Stat cards ───────────────────────────────────────────── */
@@ -184,7 +184,7 @@ body {
 
 .stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(45, 138, 110, 0.1);
+  box-shadow: 0 8px 24px rgba(30, 91, 168, 0.1);
 }
 
 .stat-card-number {
@@ -325,14 +325,14 @@ body {
 
 .nav-link.active {
   background: var(--color-primary) !important;
-  color: #e1f5ee !important;
+  color: #e8f1f8 !important;
 }
 
 .nav-link.active svg {
-  color: #e1f5ee !important;
+  color: #e8f1f8 !important;
 }
 .nav-link.active span {
-  color: #e1f5ee !important;
+  color: #e8f1f8 !important;
 }
 
 .visits-scroll {
@@ -340,4 +340,3 @@ body {
   overflow-y: auto;
   padding-right: 4px;
 }
-
