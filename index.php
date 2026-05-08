@@ -250,7 +250,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <p class="text-center mt-5" style="font-size:11px;color:#8FA6BA;">
-                        Restricted to administrators only &bull; role_id = 1 required
+                        Restricted to administrators only
                     </p>
                 </div>
             </div>
